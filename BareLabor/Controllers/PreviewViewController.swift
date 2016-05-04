@@ -55,45 +55,26 @@ class PreviewViewController: UIViewController {
     
     @IBAction func didPressDoneButton(sender: UIButton)
 	{
-		activityIndicator.startAnimating()
-        Network.sharedInstance.submitEstimateImage(image) { (success) -> () in
-			if success
-			{
-				self.activityIndicator.startAnimating()
-				
-				let alert = UIAlertController(title: "Success", message: "Please sit tight. We will bring you the estimated pricing shortly. Thank you.", preferredStyle: .Alert)
-				let okAction = UIAlertAction(title: "OK", style: .Cancel) { (_) -> Void in
-					for controller in self.navigationController!.viewControllers
-					{
-						if controller is MainMenuViewController
-						{
-							self.navigationController?.popToViewController(controller, animated: true)
-							return
-						}
-					}
-				}
-				alert.addAction(okAction)
-				self.presentViewController(alert, animated: true, completion: nil)
-
-			} else
-			{
-				self.activityIndicator.startAnimating()
-				
-				let alert = UIAlertController(title: "Warning", message: "Could not upload estimate.", preferredStyle: .Alert)
-				let okAction = UIAlertAction(title: "OK", style: .Cancel) { (_) -> Void in
-					for controller in self.navigationController!.viewControllers
-					{
-						if controller is MainMenuViewController
-						{
-							self.navigationController?.popToViewController(controller, animated: true)
-							return
-						}
-					}
-				}
-				alert.addAction(okAction)
-				self.presentViewController(alert, animated: true, completion: nil)
-			}
-		}
+        self.activityIndicator.startAnimating()
+        dispatch_async((dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0)), {
+            Network.sharedInstance.submitEstimateImage(self.image) { (success) -> () in
+                if success
+                {
+                    print("Upload success")
+                } else
+                {
+                    print("Upload failed")
+                }
+            }
+        })
+        let alert = UIAlertController(title: "Success", message: "Please sit tight. We will bring you the estimated pricing shortly. Thank you.", preferredStyle: .Alert)
+        let okAction = UIAlertAction(title: "OK", style: .Cancel) { (_) -> Void in
+            let mainMenuViewController = self.storyboard?.instantiateViewControllerWithIdentifier("MainMenuViewController") as! MainMenuViewController!
+            self.navigationController?.pushViewController(mainMenuViewController, animated: true)
+        }
+        alert.addAction(okAction)
+        self.presentViewController(alert, animated: true, completion: nil)
+        
     }
 	
     override func prefersStatusBarHidden() -> Bool {
