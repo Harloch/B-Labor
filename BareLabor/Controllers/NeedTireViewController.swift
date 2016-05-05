@@ -197,11 +197,12 @@ class NeedTireViewController: BaseViewController, UITextFieldDelegate, UIPickerV
         case .VehiclePrice:
             
             if ("" != year && "" != make && "" != model && "" != feature && "" != quantityVehicle) {
-                self.submitButtone.enabled = false;
-                self.activityIndicator.startAnimating()
+                CommonUtils.showProgress(self.view, label: "Reading data...")
                 Network.sharedInstance.getPriceByVehicle(year!, make: make!, model: model!, feature: feature!, completion: { (data) -> Void in
                     self.submitButtone.enabled = true;
-                    self.activityIndicator.stopAnimating()
+                    dispatch_async(dispatch_get_main_queue(), {
+                      CommonUtils.hideProgress()
+                    })
                     if (nil != data) {
                         debugPrint("\(data)")
                         
@@ -223,13 +224,12 @@ class NeedTireViewController: BaseViewController, UITextFieldDelegate, UIPickerV
         case .SizePrice:
             
             if ("" != width && "" != ratio && "" != diameter && "" != sizeQuantity) {
-                self.activityIndicator.hidden = false
-                self.submitButtone.enabled = false;
-                self.activityIndicator.startAnimating()
+                CommonUtils.showProgress(self.view, label: "Reading data...")
                 Network.sharedInstance.getPriceBySize(width!, ratio: ratio!, diameter: diameter!, completion: { (data) -> Void in
-                    self.activityIndicator.stopAnimating()
+                    dispatch_async(dispatch_get_main_queue(), {
+                        CommonUtils.hideProgress()
+                    })
                     self.submitButtone.enabled = true;
-                    self.activityIndicator.hidden = true
                     if (nil != data) {
                         debugPrint("\(data)")
                         
