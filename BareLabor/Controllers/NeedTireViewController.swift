@@ -192,7 +192,6 @@ class NeedTireViewController: BaseViewController, UITextFieldDelegate, UIPickerV
         let diameter = self.size3TextField.text
         let sizeQuantity = self.qty2TextField.text
         
-        
         switch(self.priceMode) {
             
         case .VehiclePrice:
@@ -235,13 +234,13 @@ class NeedTireViewController: BaseViewController, UITextFieldDelegate, UIPickerV
                         debugPrint("\(data)")
                         
                         for price in data! {
-                            let newPrice = Double(price)! * Double(quantityVehicle!)!
+                            let newPrice = Double(price)! * Double(sizeQuantity!)!
                             self.sizePrices.append(String(newPrice))
                         }
                         self.performSegueWithIdentifier(ShowSegue.NeedTire.Chart.rawValue, sender: self)
                         
                     } else {
-                        self.showAlertWithMessage("Please correct searched fields")
+                        self.showAlertWithMessage("There's no data for searched fields in database. Please correct searched fields.")
                     }
                 })
             } else {
@@ -921,8 +920,10 @@ class NeedTireViewController: BaseViewController, UITextFieldDelegate, UIPickerV
                 switch(self.priceMode) {
                 case .VehiclePrice:
                     controller.prices = self.vehiclePrices
+                    break
                 case .SizePrice:
                     controller.prices = self.sizePrices
+                    break
                 }
             }
         }

@@ -400,8 +400,10 @@ class Network: NSObject {
             "diameter":diameter]
         
         post(url, parameters: params) { (data) -> () in
-            
-            if (nil != data) {
+            print(data)
+            let priceItems = data!["items"] as! NSArray!
+            if(priceItems.count != 0) {
+                print("success")
                 var returnArray: [String] = []
                 
                 let prices = data as! NSDictionary
@@ -411,6 +413,7 @@ class Network: NSObject {
                 }
                 completion(data: returnArray)
             } else {
+                print("failed")
                 completion(data: nil)
             }
         }
