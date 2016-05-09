@@ -11,8 +11,8 @@ import UIKit
 private enum TextfieldType: Int {
     case None = 0
     case Username = 1
+    case Useremail = 10
     case UserFullName = 2
-    case Email = 3
     case Password = 4
     case VerifyPassword = 5
 }
@@ -26,6 +26,8 @@ class SignUpViewController: BaseViewController, UITextFieldDelegate {
 	
 	static let storyboardID = "SignUpViewController"
 	
+    @IBOutlet weak var emailView: UIView!
+    @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var usernameTextField: UITextField!
 //    @IBOutlet weak var userFullNameTextField: UITextField!
 //    @IBOutlet weak var emailTextField: UITextField!
@@ -63,7 +65,6 @@ class SignUpViewController: BaseViewController, UITextFieldDelegate {
         self.navigationItem.title = "Sign Up"
         
         self.signUpLoginButton.layer.borderColor = UIColor.whiteColor().CGColor
-        
         let fixedWidthBarItem = UIBarButtonItem(barButtonSystemItem: .FixedSpace, target: nil, action: nil)
         fixedWidthBarItem.width = 10
         
@@ -72,6 +73,7 @@ class SignUpViewController: BaseViewController, UITextFieldDelegate {
         let textfieldToolbar = UIToolbar(frame: CGRectMake(0, 0, Constants.Size.ScreenWidth.floatValue, 44))
         textfieldToolbar.items = keyboardToolbarItems
         
+        self.emailTextField.inputAccessoryView = textfieldToolbar
         self.usernameTextField.inputAccessoryView = textfieldToolbar
 //        userFullNameTextField.inputAccessoryView = textfieldToolbar
 //        self.emailTextField.inputAccessoryView = textfieldToolbar
@@ -81,7 +83,7 @@ class SignUpViewController: BaseViewController, UITextFieldDelegate {
         
         var attributesDictionary = [NSForegroundColorAttributeName: UIColor.whiteColor(), NSFontAttributeName : UIFont.systemFontOfSize(18.0)]
         self.usernameTextField.attributedPlaceholder = NSAttributedString(string: "Create User Name", attributes: attributesDictionary)
-        
+        self.emailTextField.attributedPlaceholder = NSAttributedString(string: "Email", attributes: attributesDictionary)
 //        attributesDictionary = [NSForegroundColorAttributeName: UIColor.whiteColor(), NSFontAttributeName : UIFont.systemFontOfSize(18.0)]
 //        self.userFullNameTextField.attributedPlaceholder = NSAttributedString(string: "Full Name", attributes: attributesDictionary)
 //        
@@ -112,7 +114,7 @@ class SignUpViewController: BaseViewController, UITextFieldDelegate {
             UIView.animateWithDuration(0.1 , animations: { () -> Void in
                 switch index {
                 case .SignUp:
-                    
+                    self.emailView.hidden = false
 //                    self.userFullNameHeight.constant = 30
 //                    self.userFullNameIconHeight.constant = 24
 //                    self.userFullNameSeparatorHeight.constant = 1
@@ -138,7 +140,7 @@ class SignUpViewController: BaseViewController, UITextFieldDelegate {
 //                    self.userEmailHeight.constant = 0
 //                    self.userEmailIconHeight.constant = 0
 //                    self.userEmailSeparatorHeight.constant = 0
-                    
+                    self.emailView.hidden = true
                     self.confirmPasswordHeight.constant = 0
                     self.confirmPasswordIconHeight.constant = 0
                     self.confirmPasswordSeparatorHeight.constant = 0
@@ -161,8 +163,8 @@ class SignUpViewController: BaseViewController, UITextFieldDelegate {
         switch self.selectedTextfieldType {
 //        case .UserFullName:
 //            self.usernameTextField.becomeFirstResponder()
-//        case .Email:
-//            self.userFullNameTextField.becomeFirstResponder()
+        case .Username:
+            self.emailTextField.becomeFirstResponder()
         case .Password:
             self.usernameTextField.becomeFirstResponder()
         case .VerifyPassword:
@@ -175,6 +177,8 @@ class SignUpViewController: BaseViewController, UITextFieldDelegate {
     func didPressKeyboardForwardButton(sender: UIBarButtonItem?) {
         
         switch self.selectedTextfieldType {
+        case .Useremail:
+            self.usernameTextField.becomeFirstResponder()
         case .Username:
             self.passwordTextField.becomeFirstResponder()
 //        case .UserFullName:
@@ -198,17 +202,22 @@ class SignUpViewController: BaseViewController, UITextFieldDelegate {
 //            let userEmail = self.emailTextField.text
             let userPassword = self.passwordTextField.text
             let userVerifyPassword = self.verifyPasswordTextField.text
+            let userEmail = self.emailTextField.text!
             
-            if("" != userName && "" != userPassword && "" != userVerifyPassword ) {
-                
+            if("" != userName && "" != userPassword && "" != userVerifyPassword && !userEmail.isEmpty) {
+                if(!CommonUtils.isValidEmail(userEmail)){
+                    CommonUtils.showAlert("Error", message: "Please enter correct email address.")
+                    return
+                }
                 if (userPassword == userVerifyPassword) {
                     activityIndicator.startAnimating()
                     var deviceToken = ""
                     if(NSUserDefaults.standardUserDefaults().valueForKey("device_token") != nil){
                         deviceToken = NSUserDefaults.standardUserDefaults().valueForKey("device_token") as! String
                     }
-                    Network.sharedInstance.signUP(userName!, password: userPassword!, deviceToken: deviceToken) { (data) -> Void in
+                    Network.sharedInstance.signUP(userName!, password: userPassword!, email: userEmail,userFullName: "", deviceToken: deviceToken) { (data) -> Void in
                         self.activityIndicator.stopAnimating()
+                        print(data)
                         if (nil != data) {
                             if ("CONFLICT" != data!["status"] as! String) {
                                 
@@ -288,7 +297,7 @@ class SignUpViewController: BaseViewController, UITextFieldDelegate {
         if let toolbar = textField.inputAccessoryView as? UIToolbar, type = TextfieldType(rawValue: textField.tag) {
             
             if let backButton = toolbar.items?[1] {
-                backButton.enabled = .Username != type
+                backButton.enabled = .Useremail != type
             }
             if let forwardButton = toolbar.items?[4] {
                 forwardButton.enabled = .VerifyPassword != type

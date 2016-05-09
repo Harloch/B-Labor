@@ -59,9 +59,9 @@ class ChartViewController: UIViewController {
         }
             // If Pushed from View History Button.
         else{
-            self.lowPriceLabel.text =  ChartViewController.lowValue
-            self.highPriceLabel.text = ChartViewController.highValue
-            self.AvaragePriceLabel.text = ChartViewController.averageValue
+            self.lowPriceLabel.text =  "$"+ChartViewController.lowValue
+            self.highPriceLabel.text = "$"+ChartViewController.highValue
+            self.AvaragePriceLabel.text = "$"+ChartViewController.averageValue
         }
     }
     

@@ -147,7 +147,7 @@ class Network: NSObject {
         let url = Network.registrationURLString
         let params = ["username":userName,
             "password":password,
-            //"email": email,
+            "email": email,
             //"userFullname" : userFullName,
             "device_token" : deviceToken]
         

@@ -414,7 +414,7 @@
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="D0F8637C-BC35-4B48-B0AF-6C6716630E2E" translatesAutoresizingMaskIntoConstraints="NO" id="NGP-Ov-3NL">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="440A04C5-9170-4246-9954-1F3D515F5DB6" translatesAutoresizingMaskIntoConstraints="NO" id="NGP-Ov-3NL">
                                                     <rect key="frame" x="305" y="123" width="8" height="13"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="8" id="4xU-XH-Bz9"/>
@@ -1118,6 +1118,50 @@
                                     <action selector="segmentedControlValueChnged:" destination="b3m-VC-xAL" eventType="valueChanged" id="VA3-Mi-Gfx"/>
                                 </connections>
                             </segmentedControl>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TSh-zT-zpp">
+                                <rect key="frame" x="0.0" y="150" width="320" height="31"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ejz-vd-eG9" userLabel="SeparatorViewConfirmPassword">
+                                        <rect key="frame" x="10" y="30" width="290" height="1"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1" id="RiT-uE-wwh"/>
+                                        </constraints>
+                                    </view>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Email" translatesAutoresizingMaskIntoConstraints="NO" id="K4d-vP-k7i">
+                                        <rect key="frame" x="10" y="3" width="24" height="20"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="20" id="bE7-gh-KMg"/>
+                                            <constraint firstAttribute="width" constant="24" id="gg3-9Q-34w"/>
+                                        </constraints>
+                                    </imageView>
+                                    <textField opaque="NO" clipsSubviews="YES" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter Your Email Address" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jNQ-Ot-L8z">
+                                        <rect key="frame" x="42" y="0.0" width="258" height="30"/>
+                                        <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="NdL-hB-4bA"/>
+                                        </constraints>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="b3m-VC-xAL" id="ZDK-qW-UyS"/>
+                                        </connections>
+                                    </textField>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="ejz-vd-eG9" secondAttribute="trailing" constant="20" id="8Wc-vj-Emk"/>
+                                    <constraint firstItem="jNQ-Ot-L8z" firstAttribute="top" secondItem="TSh-zT-zpp" secondAttribute="top" id="DQZ-Yp-jTS"/>
+                                    <constraint firstItem="ejz-vd-eG9" firstAttribute="leading" secondItem="TSh-zT-zpp" secondAttribute="leading" constant="10" id="FlG-eE-RUa"/>
+                                    <constraint firstAttribute="height" constant="31" id="Mk9-eq-3hk"/>
+                                    <constraint firstItem="K4d-vP-k7i" firstAttribute="top" secondItem="TSh-zT-zpp" secondAttribute="top" constant="3" id="Ovf-Nl-MEd"/>
+                                    <constraint firstItem="K4d-vP-k7i" firstAttribute="leading" secondItem="TSh-zT-zpp" secondAttribute="leading" constant="10" id="VNC-Rw-qJa"/>
+                                    <constraint firstAttribute="bottom" secondItem="ejz-vd-eG9" secondAttribute="bottom" id="Z1A-Tu-HCL"/>
+                                    <constraint firstItem="jNQ-Ot-L8z" firstAttribute="leading" secondItem="K4d-vP-k7i" secondAttribute="trailing" constant="8" id="uzh-hW-qzD"/>
+                                    <constraint firstAttribute="trailing" secondItem="jNQ-Ot-L8z" secondAttribute="trailing" constant="20" id="wtM-aP-IYq"/>
+                                </constraints>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t5p-1b-Qw5">
                                 <rect key="frame" x="0.0" y="201" width="320" height="31"/>
                                 <subviews>
@@ -1277,14 +1321,17 @@
                         <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="t5p-1b-Qw5" firstAttribute="top" secondItem="5e3-MW-cJJ" secondAttribute="bottom" constant="95" id="1A0-Fc-rco"/>
+                            <constraint firstItem="TSh-zT-zpp" firstAttribute="leading" secondItem="t5p-1b-Qw5" secondAttribute="leading" id="DWR-bc-0Ne"/>
                             <constraint firstAttribute="trailing" secondItem="5e3-MW-cJJ" secondAttribute="trailing" constant="20" id="Fis-aa-buE"/>
                             <constraint firstAttribute="trailing" secondItem="OoP-tZ-DfE" secondAttribute="trailing" constant="35" id="GXf-wF-8tq"/>
                             <constraint firstItem="5e3-MW-cJJ" firstAttribute="top" secondItem="scf-gg-QI3" secondAttribute="bottom" constant="58" id="How-7f-J8Y"/>
                             <constraint firstAttribute="bottomMargin" secondItem="xhU-06-hAg" secondAttribute="bottom" id="KAO-5l-txN"/>
+                            <constraint firstItem="TSh-zT-zpp" firstAttribute="trailing" secondItem="t5p-1b-Qw5" secondAttribute="trailing" id="TFo-nq-MzK"/>
                             <constraint firstAttribute="trailing" secondItem="NKD-jC-pyW" secondAttribute="trailing" id="Tme-cG-Kz2"/>
                             <constraint firstItem="t5p-1b-Qw5" firstAttribute="leading" secondItem="5t0-dV-yaA" secondAttribute="leading" id="WGL-15-y7h"/>
                             <constraint firstItem="HVz-Lb-d5t" firstAttribute="top" secondItem="t5p-1b-Qw5" secondAttribute="bottom" constant="20" id="bLK-5j-Yx2"/>
                             <constraint firstItem="5e3-MW-cJJ" firstAttribute="leading" secondItem="5t0-dV-yaA" secondAttribute="leading" constant="20" id="fHM-jP-ekr"/>
+                            <constraint firstItem="t5p-1b-Qw5" firstAttribute="top" secondItem="TSh-zT-zpp" secondAttribute="bottom" constant="20" id="iLv-m2-k5C"/>
                             <constraint firstAttribute="trailing" secondItem="HVz-Lb-d5t" secondAttribute="trailing" id="j3I-JP-u3s"/>
                             <constraint firstItem="HVz-Lb-d5t" firstAttribute="leading" secondItem="5t0-dV-yaA" secondAttribute="leading" id="nZT-wM-abC"/>
                             <constraint firstItem="xhU-06-hAg" firstAttribute="leading" secondItem="5t0-dV-yaA" secondAttribute="leading" id="oAD-oN-CzG"/>
@@ -1305,6 +1352,8 @@
                         <outlet property="confirmPasswordHeight" destination="MDo-bU-ER7" id="T1w-Za-ETp"/>
                         <outlet property="confirmPasswordIconHeight" destination="lHD-hh-qea" id="qZh-Nx-jnO"/>
                         <outlet property="confirmPasswordSeparatorHeight" destination="qlp-42-WQd" id="80u-Ny-j9C"/>
+                        <outlet property="emailTextField" destination="jNQ-Ot-L8z" id="JWf-zl-uCH"/>
+                        <outlet property="emailView" destination="TSh-zT-zpp" id="Q0l-hv-eWM"/>
                         <outlet property="passwordTextField" destination="vbj-BC-9gC" id="60x-uC-5pS"/>
                         <outlet property="signUpLoginButton" destination="OoP-tZ-DfE" id="azi-a9-8Le"/>
                         <outlet property="topContentTraling" destination="How-7f-J8Y" id="poN-fr-0mJ"/>
@@ -2955,9 +3004,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Arrow" width="5" height="8"/>
-        <image name="ConfirmPassword" width="16" height="16"/>
-        <image name="D0F8637C-BC35-4B48-B0AF-6C6716630E2E" width="5" height="8">
+        <image name="440A04C5-9170-4246-9954-1F3D515F5DB6" width="5" height="8">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -3011,6 +3058,9 @@ CmEKZgpuCnEKdgqFCokKkAqYCqUKqgqsCq4Kswq7Cr4KwwrLCs4K4ArjCugAAAAAAAACAQAAAAAAAABB
 AAAAAAAAAAAAAAAAAAAK6g
 </mutableData>
         </image>
+        <image name="Arrow" width="5" height="8"/>
+        <image name="ConfirmPassword" width="16" height="16"/>
+        <image name="Email" width="16" height="16"/>
         <image name="EmptyCercle" width="18" height="18"/>
         <image name="EngineSizeIcon" width="24" height="24"/>
         <image name="FilledCircle" width="18" height="18"/>
