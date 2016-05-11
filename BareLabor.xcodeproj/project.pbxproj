@@ -22,6 +22,8 @@
 		219DF2821C0701CF001588A1 /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219DF27F1C0701CF001588A1 /* ChartView.swift */; };
 		219DF2831C0701CF001588A1 /* ChartView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 219DF2801C0701CF001588A1 /* ChartView.xib */; };
 		219DF2881C0773A6001588A1 /* ChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219DF2871C0773A6001588A1 /* ChartViewController.swift */; };
+		52612BAE1CE3BDDB002DF488 /* SCLAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52612BAB1CE3BDDB002DF488 /* SCLAlertView.swift */; };
+		52612BAF1CE3BDDB002DF488 /* SCLExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52612BAC1CE3BDDB002DF488 /* SCLExtensions.swift */; };
 		A6A185159E34174FFF210F16 /* Pods_BareLabor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76743819A2C61F78C6CCC1F8 /* Pods_BareLabor.framework */; };
 		BF91895C1CD7D05A00918E1D /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = BF9189591CD7D05A00918E1D /* MBProgressHUD.m */; };
 		BF91895E1CD7D08000918E1D /* CommonUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF91895D1CD7D08000918E1D /* CommonUtils.swift */; };
@@ -89,6 +91,8 @@
 		219DF27F1C0701CF001588A1 /* ChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
 		219DF2801C0701CF001588A1 /* ChartView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChartView.xib; sourceTree = "<group>"; };
 		219DF2871C0773A6001588A1 /* ChartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartViewController.swift; sourceTree = "<group>"; };
+		52612BAB1CE3BDDB002DF488 /* SCLAlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SCLAlertView.swift; path = SCLAlertView/SCLAlertView.swift; sourceTree = "<group>"; };
+		52612BAC1CE3BDDB002DF488 /* SCLExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SCLExtensions.swift; path = SCLAlertView/SCLExtensions.swift; sourceTree = "<group>"; };
 		76743819A2C61F78C6CCC1F8 /* Pods_BareLabor.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BareLabor.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		836418216BD73CF2E44A0AA4 /* Pods-BareLabor.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BareLabor.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BareLabor/Pods-BareLabor.debug.xcconfig"; sourceTree = "<group>"; };
 		BF9189581CD7D05A00918E1D /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
@@ -204,9 +208,19 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		52612BA91CE3BDCF002DF488 /* SCAlertView */ = {
+			isa = PBXGroup;
+			children = (
+				52612BAB1CE3BDDB002DF488 /* SCLAlertView.swift */,
+				52612BAC1CE3BDDB002DF488 /* SCLExtensions.swift */,
+			);
+			name = SCAlertView;
+			sourceTree = "<group>";
+		};
 		BF9189541CD7D05A00918E1D /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				52612BA91CE3BDCF002DF488 /* SCAlertView */,
 				BF9189551CD7D05A00918E1D /* MBProgressHUD-master */,
 			);
 			path = Library;
@@ -590,6 +604,8 @@
 				218470661C0F41B40016DCF5 /* SlideMenuTableViewCell.swift in Sources */,
 				FAA6B2161BFF3BD500486F34 /* LoginViewController.swift in Sources */,
 				213BBF571C0380BD00E7942E /* PositiveNegativeViewController.swift in Sources */,
+				52612BAF1CE3BDDB002DF488 /* SCLExtensions.swift in Sources */,
+				52612BAE1CE3BDDB002DF488 /* SCLAlertView.swift in Sources */,
 				FA45F6021BFCF35A00E1A079 /* AppDelegate.swift in Sources */,
 				FA45F6571BFE119000E1A079 /* LocationMapViewController.swift in Sources */,
 				FAA6B21D1BFF473500486F34 /* ResultsSlideView.swift in Sources */,

@@ -17,6 +17,7 @@ class ChartView: UIView {
     }
     
     override func drawRect(rect: CGRect) {
+        print(rect.height)
         // draw the line graph
         
         let context = UIGraphicsGetCurrentContext();

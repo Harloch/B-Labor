@@ -103,7 +103,9 @@ class NeedTireViewController: BaseViewController, UITextFieldDelegate, UIPickerV
             }
         }
     }
-    
+    private var ratingArray: NSArray = []
+    private var vehicleQuantity = 1
+    private var sizeQuantity = 1
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -191,25 +193,25 @@ class NeedTireViewController: BaseViewController, UITextFieldDelegate, UIPickerV
         let ratio = self.size2TextField.text
         let diameter = self.size3TextField.text
         let sizeQuantity = self.qty2TextField.text
-        
+        ratingArray = []
         switch(self.priceMode) {
             
         case .VehiclePrice:
             
             if ("" != year && "" != make && "" != model && "" != feature && "" != quantityVehicle) {
                 CommonUtils.showProgress(self.view, label: "Reading data...")
-                Network.sharedInstance.getPriceByVehicle(year!, make: make!, model: model!, feature: feature!, completion: { (data) -> Void in
+                Network.sharedInstance.getPriceByVehicle(year!, make: make!, model: model!, feature: feature!, completion: { (data, ratingArray) -> Void in
                     self.submitButtone.enabled = true;
                     dispatch_async(dispatch_get_main_queue(), {
                       CommonUtils.hideProgress()
                     })
-                    if (nil != data) {
-                        debugPrint("\(data)")
-                        
+                    if (nil != data) {                        
                         for price in data! {
                             let newPrice = Int(Double(price)! * Double(quantityVehicle!)!)
                             self.vehiclePrices.append(String(newPrice))
                         }
+                        self.ratingArray = ratingArray
+                        self.vehicleQuantity = Int(quantityVehicle!)!
                         self.performSegueWithIdentifier(ShowSegue.NeedTire.Chart.rawValue, sender: self)
                         
                     } else {
@@ -225,18 +227,18 @@ class NeedTireViewController: BaseViewController, UITextFieldDelegate, UIPickerV
             
             if ("" != width && "" != ratio && "" != diameter && "" != sizeQuantity) {
                 CommonUtils.showProgress(self.view, label: "Reading data...")
-                Network.sharedInstance.getPriceBySize(width!, ratio: ratio!, diameter: diameter!, completion: { (data) -> Void in
+                Network.sharedInstance.getPriceBySize(width!, ratio: ratio!, diameter: diameter!, completion: { (data, ratingArray) -> Void in
                     dispatch_async(dispatch_get_main_queue(), {
                         CommonUtils.hideProgress()
                     })
                     self.submitButtone.enabled = true;
                     if (nil != data) {
-                        debugPrint("\(data)")
-                        
                         for price in data! {
                             let newPrice = Double(price)! * Double(sizeQuantity!)!
                             self.sizePrices.append(String(newPrice))
                         }
+                        self.ratingArray = ratingArray
+                        self.sizeQuantity = Int(sizeQuantity!)!
                         self.performSegueWithIdentifier(ShowSegue.NeedTire.Chart.rawValue, sender: self)
                         
                     } else {
@@ -920,9 +922,13 @@ class NeedTireViewController: BaseViewController, UITextFieldDelegate, UIPickerV
                 switch(self.priceMode) {
                 case .VehiclePrice:
                     controller.prices = self.vehiclePrices
+                    controller.quantity = self.vehicleQuantity
+                    controller.ratingArray = self.ratingArray
                     break
                 case .SizePrice:
                     controller.prices = self.sizePrices
+                    controller.quantity = self.sizeQuantity
+                    controller.ratingArray = self.ratingArray
                     break
                 }
             }

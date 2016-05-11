@@ -414,7 +414,7 @@
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="440A04C5-9170-4246-9954-1F3D515F5DB6" translatesAutoresizingMaskIntoConstraints="NO" id="NGP-Ov-3NL">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="6BC32C15-1FFD-4E87-BA00-8474C1275D5C" translatesAutoresizingMaskIntoConstraints="NO" id="NGP-Ov-3NL">
                                                     <rect key="frame" x="305" y="123" width="8" height="13"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="8" id="4xU-XH-Bz9"/>
@@ -749,21 +749,21 @@
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Average" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tgS-o8-PH4">
-                                        <rect key="frame" x="106" y="261" width="108" height="21"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="108" id="Dsi-DC-NMc"/>
-                                            <constraint firstAttribute="height" constant="21" id="wJ4-UW-c2B"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="High" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U6S-wq-g0h">
                                         <rect key="frame" x="214" y="261" width="98" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="98" id="hvA-ak-D0M"/>
                                             <constraint firstAttribute="height" constant="21" id="odD-ZS-ae1"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Average" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tgS-o8-PH4">
+                                        <rect key="frame" x="106" y="261" width="108" height="21"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="108" id="Dsi-DC-NMc"/>
+                                            <constraint firstAttribute="height" constant="21" id="wJ4-UW-c2B"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -1077,6 +1077,7 @@
                         <outlet property="advancedButton" destination="kWj-RW-dfr" id="fmc-8p-eqr"/>
                         <outlet property="avarageLabel" destination="tgS-o8-PH4" id="QTa-Vd-88x"/>
                         <outlet property="begginerButton" destination="kc1-Sl-bza" id="fm4-QP-mCl"/>
+                        <outlet property="chartView" destination="csU-Es-w3h" id="Alx-3G-v4r"/>
                         <outlet property="editButton" destination="Ow1-zi-Rj0" id="vmv-2L-poy"/>
                         <outlet property="highLabel" destination="U6S-wq-g0h" id="OJS-6j-s8k"/>
                         <outlet property="highPriceLabel" destination="dC6-Ie-BDC" id="kzO-E1-d1p"/>
@@ -3004,7 +3005,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="440A04C5-9170-4246-9954-1F3D515F5DB6" width="5" height="8">
+        <image name="6BC32C15-1FFD-4E87-BA00-8474C1275D5C" width="5" height="8">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw

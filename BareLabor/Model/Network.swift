@@ -359,7 +359,7 @@ class Network: NSObject {
      - parameter feature Get's feature from model
      */
     
-    func getPriceByVehicle(year: String, make: String, model: String, feature: String, completion: (data: [String]?) -> Void) {
+    func getPriceByVehicle(year: String, make: String, model: String, feature: String, completion: (data: [String]?, ratingArray: NSArray) -> Void) {
         
         let url = Network.getVehiclePrice
         let params = ["year" :year,
@@ -368,18 +368,17 @@ class Network: NSObject {
             "feature":feature]
         
         post(url, parameters: params) { (data) -> () in
-            
+            print(data)
             if (nil != data) {
                 var returnArray: [String] = []
-                
                 let prices = data as! NSDictionary
-                
+                let ratingArray	= data!["ratings"] as! NSArray!
                 for items in prices["items"] as! [String] {
                     returnArray.append(items)
                 }
-                completion(data: returnArray)
+                completion(data: returnArray, ratingArray: ratingArray)
             } else {
-                completion(data: nil)
+                completion(data: nil, ratingArray: [])
             }
         }
     }
@@ -392,7 +391,7 @@ class Network: NSObject {
      - parameter diameter Diameter of searched object
      */
     
-    func getPriceBySize(width: String, ratio: String, diameter: String, completion: (data: [String]?) -> Void) {
+    func getPriceBySize(width: String, ratio: String, diameter: String, completion: (data: [String]?, ratingArray: NSArray) -> Void) {
         
         let url = Network.getSizePrice
         let params = ["width":width,
@@ -400,21 +399,20 @@ class Network: NSObject {
             "diameter":diameter]
         
         post(url, parameters: params) { (data) -> () in
-            print(data)
             let priceItems = data!["items"] as! NSArray!
+            print(data)
             if(priceItems.count != 0) {
-                print("success")
                 var returnArray: [String] = []
                 
                 let prices = data as! NSDictionary
-                
+                let ratingArray	= data!["ratings"] as! NSArray!
                 for items in prices["items"] as! [String] {
                     returnArray.append(items)
                 }
-                completion(data: returnArray)
+                completion(data: returnArray, ratingArray: ratingArray)
             } else {
                 print("failed")
-                completion(data: nil)
+                completion(data: nil, ratingArray: [])
             }
         }
     }
