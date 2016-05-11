@@ -49,6 +49,7 @@ class ChartViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.ratingArray = []
         self.navigationItem.title = "What’s the Price?"
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
         
