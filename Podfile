@@ -2,12 +2,12 @@ platform :ios, '8.0'
 use_frameworks!
 
 target 'BareLabor' do
-    pod 'TesseractOCRiOS', '~> 4.0'
-    pod 'Charts'
-    pod 'Alamofire', '~> 2.0'
+    #pod 'TesseractOCRiOS', '~> 4.0'
+    pod 'Charts/Realm'
+    pod 'Alamofire', '~> 4.4'
     pod 'SDWebImage'
-    pod 'SwiftyJSON', :git => 'https://github.com/SwiftyJSON/SwiftyJSON.git'
-    pod 'MBProgressHUD', '~> 0.9.1'
+    pod 'SwiftyJSON'
+    pod 'MBProgressHUD'
     pod 'UITextView+Placeholder'
 end
 
