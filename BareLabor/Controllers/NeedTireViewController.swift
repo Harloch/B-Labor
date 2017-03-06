@@ -7,34 +7,58 @@
 //
 
 import UIKit
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func <= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l <= r
+  default:
+    return !(rhs < lhs)
+  }
+}
+
 
 private enum TextfieldType: Int {
-    case None = 0
-    case Year = 1
-    case Make = 2
-    case Model = 3
-    case Features = 4
-    case QTY1 = 5
-    case Size1 = 6
-    case Size2 = 7
-    case Size3 = 8
-    case QTY2 = 9
+    case none = 0
+    case year = 1
+    case make = 2
+    case model = 3
+    case features = 4
+    case qty1 = 5
+    case size1 = 6
+    case size2 = 7
+    case size3 = 8
+    case qty2 = 9
 }
 
 private enum PickerType: Int {
-    case YearPicker = 0
-    case MakePicker = 1
-    case ModelPicker = 2
-    case FeaturesPicker = 3
-    case QuantityPicker = 4
-    case WidthPicker = 5
-    case RatiosPicker = 6
-    case DiametersPicker = 7
+    case yearPicker = 0
+    case makePicker = 1
+    case modelPicker = 2
+    case featuresPicker = 3
+    case quantityPicker = 4
+    case widthPicker = 5
+    case ratiosPicker = 6
+    case diametersPicker = 7
 }
 
 private enum PriceMode: Int {
-    case VehiclePrice = 0
-    case SizePrice = 1
+    case vehiclePrice = 0
+    case sizePrice = 1
     
 }
 
@@ -61,62 +85,62 @@ class NeedTireViewController: BaseViewController, UITextFieldDelegate, UIPickerV
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
     
     // pickers by vehicle
-    private var yearPickerView: UIPickerView!
-    private var makePickerView: UIPickerView!
-    private var modelPickerView: UIPickerView!
-    private var featuresPickerView: UIPickerView!
-    private var quantityPickerView: UIPickerView!
+    fileprivate var yearPickerView: UIPickerView!
+    fileprivate var makePickerView: UIPickerView!
+    fileprivate var modelPickerView: UIPickerView!
+    fileprivate var featuresPickerView: UIPickerView!
+    fileprivate var quantityPickerView: UIPickerView!
     
-    private var years: [String] = []
-    private var makes: [String] = []
-    private var models: [String] = []
-    private var features: [String] = []
+    fileprivate var years: [String] = []
+    fileprivate var makes: [String] = []
+    fileprivate var models: [String] = []
+    fileprivate var features: [String] = []
     
     // pickers by size
-    private var widthPickerView: UIPickerView!
-    private var ratiosPickerView: UIPickerView!
-    private var diamteresPickerView: UIPickerView!
+    fileprivate var widthPickerView: UIPickerView!
+    fileprivate var ratiosPickerView: UIPickerView!
+    fileprivate var diamteresPickerView: UIPickerView!
     
-    private var widths: [String] = []
-    private var ratios: [String] = []
-    private var diameters: [String] = []
-    private var quantities: [String] = []
+    fileprivate var widths: [String] = []
+    fileprivate var ratios: [String] = []
+    fileprivate var diameters: [String] = []
+    fileprivate var quantities: [String] = []
     
-    private var pickerType:PickerType = .YearPicker
+    fileprivate var pickerType:PickerType = .yearPicker
     
-    private var quantity: String?
-    private var sizePrices: [String] = []
-    private var vehiclePrices: [String] = []
+    fileprivate var quantity: String?
+    fileprivate var sizePrices: [String] = []
+    fileprivate var vehiclePrices: [String] = []
     
-    private var selectedTextfieldFrame: CGRect = CGRectZero
-    private var selectedTextfieldType: TextfieldType = .None
-    private var keyboardHeight: CGFloat = 0
+    fileprivate var selectedTextfieldFrame: CGRect = CGRect.zero
+    fileprivate var selectedTextfieldType: TextfieldType = .none
+    fileprivate var keyboardHeight: CGFloat = 0
     
-    private var priceMode: PriceMode = .VehiclePrice {
+    fileprivate var priceMode: PriceMode = .vehiclePrice {
         didSet {
-            if .VehiclePrice == self.priceMode {
-                self.byVihecleView.hidden = false
-                self.bySizeView.hidden = true
+            if .vehiclePrice == self.priceMode {
+                self.byVihecleView.isHidden = false
+                self.bySizeView.isHidden = true
             } else {
-                self.bySizeView.hidden = false
-                self.byVihecleView.hidden = true
+                self.bySizeView.isHidden = false
+                self.byVihecleView.isHidden = true
             }
         }
     }
-    private var ratingArray: NSArray = []
-    private var vehicleQuantity = 1
-    private var sizeQuantity = 1
+    fileprivate var ratingArray: NSArray = []
+    fileprivate var vehicleQuantity = 1
+    fileprivate var sizeQuantity = 1
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Navigation bar
-        self.submitButtone.layer.borderColor = UIColor.whiteColor().CGColor
+        self.submitButtone.layer.borderColor = UIColor.white.cgColor
         
         self.navigationItem.title = "Need A Tire"
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         
         // tableView
-        self.table.tableFooterView = UIView(frame: CGRectZero)
+        self.table.tableFooterView = UIView(frame: CGRect.zero)
         
         // setup textfields and pickers
         self.setUpTextFields()
@@ -138,18 +162,18 @@ class NeedTireViewController: BaseViewController, UITextFieldDelegate, UIPickerV
         
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.navigationController?.navigationBarHidden = false
+        self.navigationController?.isNavigationBarHidden = false
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "onKeyboardFrameChange:", name: UIKeyboardWillChangeFrameNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(NeedTireViewController.onKeyboardFrameChange(_:)), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillChangeFrameNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
     }
     
     override func didReceiveMemoryWarning() {
@@ -158,27 +182,27 @@ class NeedTireViewController: BaseViewController, UITextFieldDelegate, UIPickerV
     
     // MARK: - IBActions
     
-    func didPressHideKeyboardButton(sender: UIBarButtonItem) {
+    func didPressHideKeyboardButton(_ sender: UIBarButtonItem) {
         
         switch self.selectedTextfieldType {
-        case .Year:
+        case .year:
             self.yearTextField.resignFirstResponder()
-        case .QTY1:
+        case .qty1:
             self.qty1TextField.resignFirstResponder()
-        case .Size1:
+        case .size1:
             self.size1TextField.resignFirstResponder()
-        case .Size2:
+        case .size2:
             self.size2TextField.resignFirstResponder()
-        case .Size3:
+        case .size3:
             self.size3TextField.resignFirstResponder()
-        case .QTY2:
+        case .qty2:
             self.qty2TextField.resignFirstResponder()
         default:
             debugPrint("Unsupported Type")
         }
     }
     
-    @IBAction func didPressSubmitButton(sender: UIButton) {
+    @IBAction func didPressSubmitButton(_ sender: UIButton) {
         
         self.sizePrices = []
         self.vehiclePrices = []
@@ -196,13 +220,13 @@ class NeedTireViewController: BaseViewController, UITextFieldDelegate, UIPickerV
         ratingArray = []
         switch(self.priceMode) {
             
-        case .VehiclePrice:
+        case .vehiclePrice:
             
             if ("" != year && "" != make && "" != model && "" != feature && "" != quantityVehicle) {
                 CommonUtils.showProgress(self.view, label: "Reading data...")
                 Network.sharedInstance.getPriceByVehicle(year!, make: make!, model: model!, feature: feature!, completion: { (data, ratingArray) -> Void in
-                    self.submitButtone.enabled = true;
-                    dispatch_async(dispatch_get_main_queue(), {
+                    self.submitButtone.isEnabled = true;
+                    DispatchQueue.main.async(execute: {
                       CommonUtils.hideProgress()
                     })
                     if (nil != data) {                        
@@ -212,7 +236,7 @@ class NeedTireViewController: BaseViewController, UITextFieldDelegate, UIPickerV
                         }
                         self.ratingArray = ratingArray
                         self.vehicleQuantity = Int(quantityVehicle!)!
-                        self.performSegueWithIdentifier(ShowSegue.NeedTire.Chart.rawValue, sender: self)
+                        self.performSegue(withIdentifier: ShowSegue.NeedTire.Chart.rawValue, sender: self)
                         
                     } else {
                         self.showAlertWithMessage("Please correct searched fields")
@@ -223,15 +247,15 @@ class NeedTireViewController: BaseViewController, UITextFieldDelegate, UIPickerV
             }
             break;
             
-        case .SizePrice:
+        case .sizePrice:
             
             if ("" != width && "" != ratio && "" != diameter && "" != sizeQuantity) {
                 CommonUtils.showProgress(self.view, label: "Reading data...")
                 Network.sharedInstance.getPriceBySize(width!, ratio: ratio!, diameter: diameter!, completion: { (data, ratingArray) -> Void in
-                    dispatch_async(dispatch_get_main_queue(), {
+                    DispatchQueue.main.async(execute: {
                         CommonUtils.hideProgress()
                     })
-                    self.submitButtone.enabled = true;
+                    self.submitButtone.isEnabled = true;
                     if (nil != data) {
                         for price in data! {
                             let newPrice = Double(price)! * Double(sizeQuantity!)!
@@ -239,7 +263,7 @@ class NeedTireViewController: BaseViewController, UITextFieldDelegate, UIPickerV
                         }
                         self.ratingArray = ratingArray
                         self.sizeQuantity = Int(sizeQuantity!)!
-                        self.performSegueWithIdentifier(ShowSegue.NeedTire.Chart.rawValue, sender: self)
+                        self.performSegue(withIdentifier: ShowSegue.NeedTire.Chart.rawValue, sender: self)
                         
                     } else {
                         self.showAlertWithMessage("There's no data for searched fields in database. Please correct searched fields.")
@@ -252,40 +276,40 @@ class NeedTireViewController: BaseViewController, UITextFieldDelegate, UIPickerV
         }
     }
     
-    @IBAction func didPressSaveMyCarButton(sender: UIButton) {
-        self.performSegueWithIdentifier(ShowSegue.NeedTire.SignUp.rawValue, sender: nil)
+    @IBAction func didPressSaveMyCarButton(_ sender: UIButton) {
+        self.performSegue(withIdentifier: ShowSegue.NeedTire.SignUp.rawValue, sender: nil)
     }
     
-    func didPressYearTextFieldDone(sender: UIBarButtonItem) {
+    func didPressYearTextFieldDone(_ sender: UIBarButtonItem) {
         self.yearTextField.resignFirstResponder()
     }
     
-    func didPressMakePickerViewDone(sender: UIBarButtonItem) {
+    func didPressMakePickerViewDone(_ sender: UIBarButtonItem) {
         self.makeTextField.resignFirstResponder()
     }
     
-    func didPressModelPickerViewDone(sender: UIBarButtonItem) {
+    func didPressModelPickerViewDone(_ sender: UIBarButtonItem) {
         self.modelTextField.resignFirstResponder()
     }
     
-    func didPressFeaturesPickerViewDone(sender: UIBarButtonItem) {
+    func didPressFeaturesPickerViewDone(_ sender: UIBarButtonItem) {
         self.featuresTextField.resignFirstResponder()
     }
     
-    func didPressQuantity1PickerViewDone(sender: UIBarButtonItem) {
+    func didPressQuantity1PickerViewDone(_ sender: UIBarButtonItem) {
         self.qty1TextField.resignFirstResponder()
     }
     
-    func didPressQuantity2PickerViewDone(sender: UIBarButtonItem) {
+    func didPressQuantity2PickerViewDone(_ sender: UIBarButtonItem) {
         self.qty2TextField.resignFirstResponder()
     }
     
-    @IBAction func segmentDidChange(sender: AnyObject) {
+    @IBAction func segmentDidChange(_ sender: AnyObject) {
         switch(sender.selectedSegmentIndex) {
-        case PriceMode.VehiclePrice.rawValue:
-            self.priceMode = .VehiclePrice
-        case PriceMode.SizePrice.rawValue:
-            self.priceMode = .SizePrice
+        case PriceMode.vehiclePrice.rawValue:
+            self.priceMode = .vehiclePrice
+        case PriceMode.sizePrice.rawValue:
+            self.priceMode = .sizePrice
         default:
             break
         }
@@ -293,129 +317,129 @@ class NeedTireViewController: BaseViewController, UITextFieldDelegate, UIPickerV
     
     // MARK: - Private Method
     
-    private func changeTableOffset() {
+    fileprivate func changeTableOffset() {
         
         let statusNavigationBarHeight: CGFloat = 64
         let textfieldYHeight = self.selectedTextfieldFrame.origin.y + self.selectedTextfieldFrame.size.height
-        let nonKeyboardHeight = Constants.Size.ScreenHeight.floatValue - self.keyboardHeight - statusNavigationBarHeight
+        let nonKeyboardHeight = Constants.Size.screenHeight.floatValue - self.keyboardHeight - statusNavigationBarHeight
         if textfieldYHeight > nonKeyboardHeight {
             
-            self.table.setContentOffset(CGPointMake(0, textfieldYHeight - nonKeyboardHeight - statusNavigationBarHeight + 10), animated: true)
+            self.table.setContentOffset(CGPoint(x: 0, y: textfieldYHeight - nonKeyboardHeight - statusNavigationBarHeight + 10), animated: true)
         }
     }
     
-    private func setUpTextFields() {
+    fileprivate func setUpTextFields() {
         
         // keyBoard
-        let textfieldToolbar = UIToolbar(frame: CGRectMake(0, 0, Constants.Size.ScreenWidth.floatValue, 44))
-        textfieldToolbar.items = [UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil), UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: "didPressHideKeyboardButton:")]
+        let textfieldToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: Constants.Size.screenWidth.floatValue, height: 44))
+        textfieldToolbar.items = [UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil), UIBarButtonItem(barButtonSystemItem: .done, target: self, action: "didPressHideKeyboardButton:")]
         
         // year textField
         
-        var attributesDictionary = [NSForegroundColorAttributeName: UIColor.whiteColor(), NSFontAttributeName : UIFont.systemFontOfSize(18.0)]
+        var attributesDictionary = [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName : UIFont.systemFont(ofSize: 18.0)]
         self.yearTextField.attributedPlaceholder = NSAttributedString(string: "Year", attributes: attributesDictionary)
         self.yearPickerView = UIPickerView()
         self.yearPickerView.showsSelectionIndicator = true
         self.yearPickerView.delegate = self
         self.yearPickerView.dataSource = self
-        self.yearPickerView.tag = PickerType.YearPicker.rawValue
+        self.yearPickerView.tag = PickerType.yearPicker.rawValue
         self.yearTextField.inputView = self.yearPickerView
         
-        let yearTextFieldToolbar = UIToolbar(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width, 44))
-        yearTextFieldToolbar.items = [UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil), UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: "didPressYearTextFieldDone:")]
+        let yearTextFieldToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 44))
+        yearTextFieldToolbar.items = [UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil), UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(NeedTireViewController.didPressYearTextFieldDone(_:)))]
         self.yearTextField.inputAccessoryView = yearTextFieldToolbar
         
         // make textField
-        attributesDictionary = [NSForegroundColorAttributeName: UIColor.whiteColor(), NSFontAttributeName : UIFont.systemFontOfSize(18.0)]
+        attributesDictionary = [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName : UIFont.systemFont(ofSize: 18.0)]
         self.makeTextField.attributedPlaceholder = NSAttributedString(string: "Make", attributes: attributesDictionary)
         self.makePickerView = UIPickerView()
         self.makePickerView.showsSelectionIndicator = true
         self.makePickerView.delegate = self
         self.makePickerView.dataSource = self
-        self.makePickerView.tag = PickerType.MakePicker.rawValue
+        self.makePickerView.tag = PickerType.makePicker.rawValue
         self.makeTextField.inputView = self.makePickerView
         
-        let makeTextFieldToolbar = UIToolbar(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width, 44))
-        makeTextFieldToolbar.items = [UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil), UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: "didPressMakePickerViewDone:")]
+        let makeTextFieldToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 44))
+        makeTextFieldToolbar.items = [UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil), UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(NeedTireViewController.didPressMakePickerViewDone(_:)))]
         self.makeTextField.inputAccessoryView = makeTextFieldToolbar
         
         // model textField
-        attributesDictionary = [NSForegroundColorAttributeName: UIColor.whiteColor(), NSFontAttributeName : UIFont.systemFontOfSize(18.0)]
+        attributesDictionary = [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName : UIFont.systemFont(ofSize: 18.0)]
         self.modelTextField.attributedPlaceholder = NSAttributedString(string: "Model", attributes: attributesDictionary)
         self.modelPickerView = UIPickerView()
         self.modelPickerView.showsSelectionIndicator = true
         self.modelPickerView.delegate = self
         self.modelPickerView.dataSource = self
-        self.modelPickerView.tag = PickerType.ModelPicker.rawValue
+        self.modelPickerView.tag = PickerType.modelPicker.rawValue
         self.modelTextField.inputView = self.modelPickerView
         
-        let modelTextFieldToolbar = UIToolbar(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width, 44))
-        modelTextFieldToolbar.items = [UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil), UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: "didPressModelPickerViewDone:")]
+        let modelTextFieldToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 44))
+        modelTextFieldToolbar.items = [UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil), UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(NeedTireViewController.didPressModelPickerViewDone(_:)))]
         self.modelTextField.inputAccessoryView = modelTextFieldToolbar
         
         // featuresTextField
-        attributesDictionary = [NSForegroundColorAttributeName: UIColor.whiteColor(), NSFontAttributeName : UIFont.systemFontOfSize(18.0)]
+        attributesDictionary = [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName : UIFont.systemFont(ofSize: 18.0)]
         self.featuresTextField.attributedPlaceholder = NSAttributedString(string: "Features", attributes: attributesDictionary)
         self.featuresPickerView = UIPickerView()
         self.featuresPickerView.showsSelectionIndicator = true
         self.featuresPickerView.delegate = self
         self.featuresPickerView.dataSource = self
-        self.featuresPickerView.tag = PickerType.FeaturesPicker.rawValue
+        self.featuresPickerView.tag = PickerType.featuresPicker.rawValue
         self.featuresTextField.inputView = self.featuresPickerView
         
-        let featuresTextFieldToolbar = UIToolbar(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width, 44))
-        featuresTextFieldToolbar.items = [UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil), UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: "didPressFeaturesPickerViewDone:")]
+        let featuresTextFieldToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 44))
+        featuresTextFieldToolbar.items = [UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil), UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(NeedTireViewController.didPressFeaturesPickerViewDone(_:)))]
         self.featuresTextField.inputAccessoryView = featuresTextFieldToolbar
         
         // quantity TextFields
-        attributesDictionary = [NSForegroundColorAttributeName: UIColor.whiteColor(), NSFontAttributeName : UIFont.systemFontOfSize(18.0)]
+        attributesDictionary = [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName : UIFont.systemFont(ofSize: 18.0)]
         self.quantityPickerView = UIPickerView()
         self.quantityPickerView.showsSelectionIndicator = true
         self.quantityPickerView.delegate = self
         self.quantityPickerView.dataSource = self
-        self.quantityPickerView.tag = PickerType.QuantityPicker.rawValue
+        self.quantityPickerView.tag = PickerType.quantityPicker.rawValue
         self.qty1TextField.inputView = self.quantityPickerView
         self.qty2TextField.inputView = self.quantityPickerView
         
-        let quantity1Toolbar = UIToolbar(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width, 44))
-        quantity1Toolbar.items = [UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil), UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: "didPressQuantity1PickerViewDone:")]
+        let quantity1Toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 44))
+        quantity1Toolbar.items = [UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil), UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(NeedTireViewController.didPressQuantity1PickerViewDone(_:)))]
         self.qty1TextField.inputAccessoryView = quantity1Toolbar
         
-        let quantity2Toolbar = UIToolbar(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width, 44))
-        quantity1Toolbar.items = [UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil), UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: "didPressQuantity2PickerViewDone:")]
+        let quantity2Toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 44))
+        quantity1Toolbar.items = [UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil), UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(NeedTireViewController.didPressQuantity2PickerViewDone(_:)))]
         self.qty2TextField.inputAccessoryView = quantity2Toolbar
         
         // width textField
-        attributesDictionary = [NSForegroundColorAttributeName: UIColor.whiteColor(), NSFontAttributeName : UIFont.systemFontOfSize(14.0)]
+        attributesDictionary = [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName : UIFont.systemFont(ofSize: 14.0)]
         self.size1TextField.attributedPlaceholder = NSAttributedString(string: "Tire Width", attributes: attributesDictionary)
         
         self.widthPickerView = UIPickerView()
         self.widthPickerView.showsSelectionIndicator = true
         self.widthPickerView.delegate = self
         self.widthPickerView.dataSource = self
-        self.widthPickerView.tag = PickerType.WidthPicker.rawValue
+        self.widthPickerView.tag = PickerType.widthPicker.rawValue
         self.size1TextField.inputView = self.widthPickerView
         
         // ratio textField
-        attributesDictionary = [NSForegroundColorAttributeName: UIColor.whiteColor(), NSFontAttributeName : UIFont.systemFontOfSize(14.0)]
+        attributesDictionary = [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName : UIFont.systemFont(ofSize: 14.0)]
         self.size2TextField.attributedPlaceholder = NSAttributedString(string: "Aspect Ratio", attributes: attributesDictionary)
         
         self.ratiosPickerView = UIPickerView()
         self.ratiosPickerView.showsSelectionIndicator = true
         self.ratiosPickerView.delegate = self
         self.ratiosPickerView.dataSource = self
-        self.ratiosPickerView.tag = PickerType.RatiosPicker.rawValue
+        self.ratiosPickerView.tag = PickerType.ratiosPicker.rawValue
         self.size2TextField.inputView = self.ratiosPickerView
         
         // diameter textField
-        attributesDictionary = [NSForegroundColorAttributeName: UIColor.whiteColor(), NSFontAttributeName : UIFont.systemFontOfSize(14.0)]
+        attributesDictionary = [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName : UIFont.systemFont(ofSize: 14.0)]
         self.size3TextField.attributedPlaceholder = NSAttributedString(string: "Rim Diameter", attributes: attributesDictionary)
         
         self.diamteresPickerView = UIPickerView()
         self.diamteresPickerView.showsSelectionIndicator = true
         self.diamteresPickerView.delegate = self
         self.diamteresPickerView.dataSource = self
-        self.diamteresPickerView.tag = PickerType.DiametersPicker.rawValue
+        self.diamteresPickerView.tag = PickerType.diametersPicker.rawValue
         self.size3TextField.inputView = self.diamteresPickerView
         
         
@@ -427,16 +451,16 @@ class NeedTireViewController: BaseViewController, UITextFieldDelegate, UIPickerV
         
     }
     
-    private func getYears() -> [String] {
+    fileprivate func getYears() -> [String] {
         var years = [String]()
-        let todayDate = NSDate()
-        let calendar = NSCalendar(identifier: NSCalendarIdentifierGregorian)!
-        let currentYear = calendar.components(.Year, fromDate: todayDate)
+        let todayDate = Date()
+        let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
+        let currentYear = (calendar as NSCalendar).components(.year, from: todayDate)
         
-        for var i = 1953; i <= currentYear.year; ++i {
+        for var i = 1953; i <= currentYear.year; i += 1 {
             years.append(String(i))
         }
-        years.sortInPlace(>)
+        years.sort(by: >)
         
         self.yearTextField.text = "2016"
         
@@ -463,7 +487,7 @@ class NeedTireViewController: BaseViewController, UITextFieldDelegate, UIPickerV
         return years
     }
     
-    private func getWidths() -> [String] {
+    fileprivate func getWidths() -> [String] {
         
         var widths = [String]()
         
@@ -478,7 +502,7 @@ class NeedTireViewController: BaseViewController, UITextFieldDelegate, UIPickerV
             widths.append(String(i))
         }
         
-        for var i = 24; i <= 42; ++i {
+        for var i = 24; i <= 42; i += 1 {
             widths.append(String(i) + "X")
         }
         
@@ -492,7 +516,7 @@ class NeedTireViewController: BaseViewController, UITextFieldDelegate, UIPickerV
         return widths
     }
     
-    private func getHeights() -> [String] {
+    fileprivate func getHeights() -> [String] {
         var heights = [String]()
         
         let counter = 5
@@ -513,7 +537,7 @@ class NeedTireViewController: BaseViewController, UITextFieldDelegate, UIPickerV
         return heights
     }
     
-    private func getRim() -> [String] {
+    fileprivate func getRim() -> [String] {
         var rims = [String]()
         
         var counter = 2
@@ -541,17 +565,17 @@ class NeedTireViewController: BaseViewController, UITextFieldDelegate, UIPickerV
             }
         }
         
-        rims.sortInPlace(<)
+        rims.sort(by: <)
         
         self.size3TextField.text = rims[0] // set default diameter
         
         return rims
     }
     
-    private func getQuantity() -> [String] {
+    fileprivate func getQuantity() -> [String] {
         var quantities = [String]()
         
-        for var i = 1; i <= 12; i++ {
+        for var i = 1; i <= 12; i += 1 {
             quantities.append(String(i))
         }
         
@@ -562,35 +586,35 @@ class NeedTireViewController: BaseViewController, UITextFieldDelegate, UIPickerV
         return quantities
     }
     
-    private func showAlertWithMessage(message: String) {
+    fileprivate func showAlertWithMessage(_ message: String) {
         
-        let alert = UIAlertController(title: "Warning", message: message, preferredStyle: .Alert)
+        let alert = UIAlertController(title: "Warning", message: message, preferredStyle: .alert)
         
-        alert.addAction(UIAlertAction(title: "OK", style: .Cancel, handler: { (alertController) -> Void in
-            alert.dismissViewControllerAnimated(true, completion: nil)
+        alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { (alertController) -> Void in
+            alert.dismiss(animated: true, completion: nil)
         }))
         defer {
-            dispatch_async(dispatch_get_main_queue()) { () -> Void in
-                self.presentViewController(alert, animated: true, completion: { () -> Void in
+            DispatchQueue.main.async { () -> Void in
+                self.present(alert, animated: true, completion: { () -> Void in
                     
                 })
             }
         }
     }
     
-    private func shouldCleanTextFields(forTag tag: Int) {
+    fileprivate func shouldCleanTextFields(forTag tag: Int) {
         
         switch(tag) {
-        case TextfieldType.Year.rawValue:
+        case TextfieldType.year.rawValue:
             self.makeTextField.text = ""
             self.modelTextField.text = ""
             self.featuresTextField.text = ""
             
-        case TextfieldType.Make.rawValue:
+        case TextfieldType.make.rawValue:
             self.modelTextField.text = ""
             self.featuresTextField.text = ""
             
-        case TextfieldType.Model.rawValue:
+        case TextfieldType.model.rawValue:
             self.featuresTextField.text = ""
             
         default:
@@ -600,31 +624,31 @@ class NeedTireViewController: BaseViewController, UITextFieldDelegate, UIPickerV
     
     //MARK: - UIPickerViewDataSource and UIPickerViewDelegate Methods
     
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
     
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         
         var returnValue = 0
         
         switch(pickerView.tag) {
             
-        case PickerType.YearPicker.rawValue:
+        case PickerType.yearPicker.rawValue:
             returnValue = self.years.count
-        case PickerType.MakePicker.rawValue:
+        case PickerType.makePicker.rawValue:
             returnValue = self.makes.count
-        case PickerType.ModelPicker.rawValue:
+        case PickerType.modelPicker.rawValue:
             returnValue = self.models.count
-        case PickerType.FeaturesPicker.rawValue:
+        case PickerType.featuresPicker.rawValue:
             returnValue = self.features.count
-        case PickerType.QuantityPicker.rawValue:
+        case PickerType.quantityPicker.rawValue:
             returnValue = self.quantities.count
-        case PickerType.WidthPicker.rawValue:
+        case PickerType.widthPicker.rawValue:
             returnValue = self.widths.count
-        case PickerType.RatiosPicker.rawValue:
+        case PickerType.ratiosPicker.rawValue:
             returnValue = self.ratios.count
-        case PickerType.DiametersPicker.rawValue:
+        case PickerType.diametersPicker.rawValue:
             returnValue = self.diameters.count
         default:
             returnValue = 0
@@ -633,35 +657,35 @@ class NeedTireViewController: BaseViewController, UITextFieldDelegate, UIPickerV
         return returnValue
     }
     
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         
         var returnValue: String = ""
         
         switch(pickerView.tag) {
             
-        case PickerType.YearPicker.rawValue:
+        case PickerType.yearPicker.rawValue:
             returnValue = self.years[row]
-        case PickerType.MakePicker.rawValue:
+        case PickerType.makePicker.rawValue:
             if 0 != self.makes.count {
                 returnValue = self.makes[row]
             }
             
-        case PickerType.ModelPicker.rawValue:
+        case PickerType.modelPicker.rawValue:
             if 0 != self.models.count {
                 returnValue = self.models[row]
             }
             
-        case PickerType.FeaturesPicker.rawValue:
+        case PickerType.featuresPicker.rawValue:
             if 0 != self.features.count {
                 returnValue = self.features[row]
             }
-        case PickerType.QuantityPicker.rawValue:
+        case PickerType.quantityPicker.rawValue:
             returnValue = self.quantities[row]
-        case PickerType.WidthPicker.rawValue:
+        case PickerType.widthPicker.rawValue:
             returnValue = self.widths[row]
-        case PickerType.RatiosPicker.rawValue:
+        case PickerType.ratiosPicker.rawValue:
             returnValue = self.ratios[row]
-        case PickerType.DiametersPicker.rawValue:
+        case PickerType.diametersPicker.rawValue:
             returnValue = self.diameters[row]
         default:
             returnValue = ""
@@ -670,40 +694,40 @@ class NeedTireViewController: BaseViewController, UITextFieldDelegate, UIPickerV
         return returnValue
     }
     
-    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         switch(pickerView.tag) {
             
-        case PickerType.YearPicker.rawValue:
+        case PickerType.yearPicker.rawValue:
             self.yearTextField.text = self.years[row]
-        case PickerType.MakePicker.rawValue:
+        case PickerType.makePicker.rawValue:
             if 0 != self.makes.count {
                 self.makeTextField.text = self.makes[row]
             }
-        case PickerType.ModelPicker.rawValue:
+        case PickerType.modelPicker.rawValue:
             
             if 0 != self.models.count {
                 self.modelTextField.text = self.models[row]
             }
             
-        case PickerType.FeaturesPicker.rawValue:
+        case PickerType.featuresPicker.rawValue:
             
             if 0 != self.features.count {
                 self.featuresTextField.text = self.features[row]
             }
             
-        case PickerType.QuantityPicker.rawValue:
+        case PickerType.quantityPicker.rawValue:
             
-            if .QTY1 == self.selectedTextfieldType {
+            if .qty1 == self.selectedTextfieldType {
                 self.qty1TextField.text = self.quantities[row]
             } else {
                 self.qty2TextField.text = self.quantities[row]
             }
             
-        case PickerType.WidthPicker.rawValue:
+        case PickerType.widthPicker.rawValue:
             self.size1TextField.text = self.widths[row]
-        case PickerType.RatiosPicker.rawValue:
+        case PickerType.ratiosPicker.rawValue:
             self.size2TextField.text = self.ratios[row]
-        case PickerType.DiametersPicker.rawValue:
+        case PickerType.diametersPicker.rawValue:
             self.size3TextField.text = self.diameters[row]
         default:
             break
@@ -712,22 +736,22 @@ class NeedTireViewController: BaseViewController, UITextFieldDelegate, UIPickerV
     
     // MARK: - UITextFieldDelegate Methods
     
-    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         
         var fillChecker: Bool = true
         
         switch(textField.tag) {
             
-        case TextfieldType.Year.rawValue:
+        case TextfieldType.year.rawValue:
             debugPrint("year")
-        case TextfieldType.Make.rawValue:
+        case TextfieldType.make.rawValue:
             
             if "" == self.yearTextField.text {
                 self.showAlertWithMessage("Please fill the year field")
                 fillChecker = false
             }
             
-        case TextfieldType.Model.rawValue:
+        case TextfieldType.model.rawValue:
             
             if "" == self.yearTextField.text && "" == self.makeTextField.text {
                 self.showAlertWithMessage("Please fill the year and make fields")
@@ -741,7 +765,7 @@ class NeedTireViewController: BaseViewController, UITextFieldDelegate, UIPickerV
                 fillChecker = false
             }
             
-        case TextfieldType.Features.rawValue:
+        case TextfieldType.features.rawValue:
             
             if "" == self.yearTextField.text && "" == self.makeTextField.text && "" == self.modelTextField.text {
                 self.showAlertWithMessage("Please fill the and year, make and model fields")
@@ -758,15 +782,15 @@ class NeedTireViewController: BaseViewController, UITextFieldDelegate, UIPickerV
                 fillChecker = false
             }
             
-        case TextfieldType.QTY1.rawValue:
+        case TextfieldType.qty1.rawValue:
             break
-        case TextfieldType.Size1.rawValue:
+        case TextfieldType.size1.rawValue:
             break
-        case TextfieldType.Size2.rawValue:
+        case TextfieldType.size2.rawValue:
             break
-        case TextfieldType.Size3.rawValue:
+        case TextfieldType.size3.rawValue:
             break
-        case TextfieldType.QTY2.rawValue:
+        case TextfieldType.qty2.rawValue:
             break
         default:
             break
@@ -779,12 +803,12 @@ class NeedTireViewController: BaseViewController, UITextFieldDelegate, UIPickerV
         
         var frame = textField.frame
         
-        if .Year == self.selectedTextfieldType || .Make == self.selectedTextfieldType || .Model == self.selectedTextfieldType || .Features == self.selectedTextfieldType || .QTY1 == self.selectedTextfieldType{
-            frame.origin.y += (self.byVihecleView.frame.origin.y + (.QTY1 != self.selectedTextfieldType ? self.qty1TextField.frame.size.height : 0) + (.Features != self.selectedTextfieldType ? self.featuresTextField.frame.size.height : 0))
+        if .year == self.selectedTextfieldType || .make == self.selectedTextfieldType || .model == self.selectedTextfieldType || .features == self.selectedTextfieldType || .qty1 == self.selectedTextfieldType{
+            frame.origin.y += (self.byVihecleView.frame.origin.y + (.qty1 != self.selectedTextfieldType ? self.qty1TextField.frame.size.height : 0) + (.features != self.selectedTextfieldType ? self.featuresTextField.frame.size.height : 0))
         }
         
-        if .Size1 == self.selectedTextfieldType || .Size2 == self.selectedTextfieldType || .Size3 == self.selectedTextfieldType || .QTY2 == self.selectedTextfieldType{
-            frame.origin.y += (self.bySizeView.frame.origin.y + (.QTY2 != self.selectedTextfieldType ? self.qty2TextField.frame.size.height : 0))
+        if .size1 == self.selectedTextfieldType || .size2 == self.selectedTextfieldType || .size3 == self.selectedTextfieldType || .qty2 == self.selectedTextfieldType{
+            frame.origin.y += (self.bySizeView.frame.origin.y + (.qty2 != self.selectedTextfieldType ? self.qty2TextField.frame.size.height : 0))
         }
         
         self.selectedTextfieldFrame = frame
@@ -793,17 +817,17 @@ class NeedTireViewController: BaseViewController, UITextFieldDelegate, UIPickerV
         return fillChecker
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
         textField.resignFirstResponder()
         return true
     }
     
-    func textFieldDidEndEditing(textField: UITextField) {
+    func textFieldDidEndEditing(_ textField: UITextField) {
         
         switch(textField.tag) {
             
-        case TextfieldType.Year.rawValue:
+        case TextfieldType.year.rawValue:
             
             let year = self.yearTextField.text
             
@@ -828,7 +852,7 @@ class NeedTireViewController: BaseViewController, UITextFieldDelegate, UIPickerV
             } else {
             }
             
-        case TextfieldType.Make.rawValue:
+        case TextfieldType.make.rawValue:
             
             let year = self.yearTextField.text
             let make = self.makeTextField.text
@@ -854,9 +878,9 @@ class NeedTireViewController: BaseViewController, UITextFieldDelegate, UIPickerV
             } else {
             }
             
-        case TextfieldType.Model.rawValue:
+        case TextfieldType.model.rawValue:
             
-            self.modelTextField.userInteractionEnabled = true
+            self.modelTextField.isUserInteractionEnabled = true
             
             let year = self.yearTextField.text
             let make = self.makeTextField.text
@@ -891,41 +915,41 @@ class NeedTireViewController: BaseViewController, UITextFieldDelegate, UIPickerV
     
     // MARK: - Keyboard Behavior
     
-    func onKeyboardFrameChange(sender: NSNotification) {
+    func onKeyboardFrameChange(_ sender: Notification) {
         
-        if let userInfo = sender.userInfo, keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue() {
+        if let userInfo = sender.userInfo, let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             
-            if keyboardFrame.origin.y < Constants.Size.ScreenHeight.floatValue {//Keyboard Up
+            if keyboardFrame.origin.y < Constants.Size.screenHeight.floatValue {//Keyboard Up
                 
-                self.table.scrollEnabled = false
+                self.table.isScrollEnabled = false
                 self.keyboardHeight = keyboardFrame.size.height
                 self.changeTableOffset()
             } else {//Keyboard Down
                 
-                self.table.scrollEnabled = true
+                self.table.isScrollEnabled = true
                 self.keyboardHeight = 0
-                self.selectedTextfieldFrame = CGRectZero
-                self.selectedTextfieldType = .None
-                self.table.setContentOffset(CGPointMake(0, -64), animated: true)
+                self.selectedTextfieldFrame = CGRect.zero
+                self.selectedTextfieldType = .none
+                self.table.setContentOffset(CGPoint(x: 0, y: -64), animated: true)
             }
         }
     }
     
     // MARK: - Navigation
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == ShowSegue.NeedTire.Chart.rawValue {
             
-            if let controller = segue.destinationViewController as? ChartViewController {
+            if let controller = segue.destination as? ChartViewController {
                 debugPrint("show chart controller")
                 
                 switch(self.priceMode) {
-                case .VehiclePrice:
+                case .vehiclePrice:
                     controller.prices = self.vehiclePrices
                     controller.quantity = self.vehicleQuantity
                     controller.ratingArray = self.ratingArray
                     break
-                case .SizePrice:
+                case .sizePrice:
                     controller.prices = self.sizePrices
                     controller.quantity = self.sizeQuantity
                     controller.ratingArray = self.ratingArray

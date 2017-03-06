@@ -11,10 +11,10 @@ import Foundation
 
 enum ToggleButtons: Int {
     
-    case Master = 0
-    case Advanced = 1
-    case Intermediate = 2
-    case Begginer = 3
+    case master = 0
+    case advanced = 1
+    case intermediate = 2
+    case begginer = 3
 }
 
 class ChartViewController: UIViewController {
@@ -50,10 +50,10 @@ class ChartViewController: UIViewController {
         super.viewDidLoad()
         
         self.navigationItem.title = "What’s the Price?"
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         
-        self.editButton.layer.borderColor = UIColor.whiteColor().CGColor
-        self.notMyCarButton.layer.borderColor = UIColor.whiteColor().CGColor
+        self.editButton.layer.borderColor = UIColor.white.cgColor
+        self.notMyCarButton.layer.borderColor = UIColor.white.cgColor
         
         // If Pushed from NeedTireViewController
         if (self.prices.count != 0) {
@@ -72,23 +72,23 @@ class ChartViewController: UIViewController {
         
         let ratingArrayCount = self.ratingArray.count
         let chartViewHeight = self.chartView.frame.size.height
-        let screenWidth = UIScreen.mainScreen().bounds.size.width
+        let screenWidth = UIScreen.main.bounds.size.width
         let perWidth = screenWidth/CGFloat(ratingArrayCount+1)
         print("chartviewheight", chartViewHeight)
         let heightAry : NSMutableArray=[]
         let firstSize = 100
         for i in 0 ..< ratingArrayCount {
-            heightAry.addObject(firstSize + (i * 10))
+            heightAry.add(firstSize + (i * 10))
         }
         
         print(heightAry)
         var i = 0
         if (ratingArrayCount != 0) {
             for _ in ratingArray {
-                let button   = UIButton(type: UIButtonType.System) as UIButton
-                button.frame = CGRectMake(perWidth*CGFloat(i+1), chartViewHeight - CGFloat(heightAry[i] as! NSNumber), 9, CGFloat(heightAry[i] as! NSNumber))
-                button.backgroundColor = UIColor.whiteColor()
-                button.addTarget(self, action: #selector(ChartViewController.barBtnsTapped(_:)), forControlEvents: .TouchUpInside)
+                let button   = UIButton(type: UIButtonType.system) as UIButton
+                button.frame = CGRect(x: perWidth*CGFloat(i+1), y: chartViewHeight - CGFloat(heightAry[i] as! NSNumber), width: 9, height: CGFloat(heightAry[i] as! NSNumber))
+                button.backgroundColor = UIColor.white
+                button.addTarget(self, action: #selector(ChartViewController.barBtnsTapped(_:)), for: .touchUpInside)
                 button.tag = ratingArrayCount-i-1
                 i = i + 1
                 self.chartView.addSubview(button)
@@ -96,7 +96,7 @@ class ChartViewController: UIViewController {
         }
     }
     
-    func barBtnsTapped(sender: UIButton){
+    func barBtnsTapped(_ sender: UIButton){
         let index = sender.tag
         let rating = self.ratingArray[index]
         
@@ -104,58 +104,58 @@ class ChartViewController: UIViewController {
         let alert = SCLAlertView()
         
         // Creat the subview
-        let subview = UIView(frame: CGRectMake(0,0,220,170))
+        let subview = UIView(frame: CGRect(x: 0,y: 0,width: 220,height: 170))
         
-        let nameLabel = UILabel(frame: CGRectMake(10, 10, 80, 50))
-        nameLabel.textAlignment = NSTextAlignment.Left
-        nameLabel.textColor = UIColor.blackColor()
+        let nameLabel = UILabel(frame: CGRect(x: 10, y: 10, width: 80, height: 50))
+        nameLabel.textAlignment = NSTextAlignment.left
+        nameLabel.textColor = UIColor.black
         nameLabel.text = "Tire Name"
         subview.addSubview(nameLabel)
         
-        let nameValueLabel = UILabel(frame: CGRectMake(90, 10, 120, 50))
-        nameValueLabel.textAlignment = NSTextAlignment.Right
-        nameValueLabel.textColor = UIColor.blackColor()
-        nameValueLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
+        let nameValueLabel = UILabel(frame: CGRect(x: 90, y: 10, width: 120, height: 50))
+        nameValueLabel.textAlignment = NSTextAlignment.right
+        nameValueLabel.textColor = UIColor.black
+        nameValueLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
         nameValueLabel.numberOfLines = 100
         nameValueLabel.text = rating["t_name"] as! String!
         nameValueLabel.font = UIFont(name: (nameValueLabel.font?.fontName)!, size: 12)
         subview.addSubview(nameValueLabel)
         
-        let priceLabel = UILabel(frame: CGRectMake(10, 60, 100, 30))
-        priceLabel.textAlignment = NSTextAlignment.Left
-        priceLabel.textColor = UIColor.blackColor()
+        let priceLabel = UILabel(frame: CGRect(x: 10, y: 60, width: 100, height: 30))
+        priceLabel.textAlignment = NSTextAlignment.left
+        priceLabel.textColor = UIColor.black
         priceLabel.text = "Tire Price"
         subview.addSubview(priceLabel)
         
-        let priceValueLabel = UILabel(frame: CGRectMake(110, 60, 100, 30))
-        priceValueLabel.textAlignment = NSTextAlignment.Right
-        priceValueLabel.textColor = UIColor.blackColor()
+        let priceValueLabel = UILabel(frame: CGRect(x: 110, y: 60, width: 100, height: 30))
+        priceValueLabel.textAlignment = NSTextAlignment.right
+        priceValueLabel.textColor = UIColor.black
         let t_price = rating["t_price"] as! NSString!
         let quantityPrice = CGFloat(t_price.doubleValue) * CGFloat(self.quantity)
         priceValueLabel.text = "\(quantityPrice)"
         subview.addSubview(priceValueLabel)
         
-        let mileageLabel = UILabel(frame: CGRectMake(10, 90, 100, 30))
-        mileageLabel.textAlignment = NSTextAlignment.Left
-        mileageLabel.textColor = UIColor.blackColor()
+        let mileageLabel = UILabel(frame: CGRect(x: 10, y: 90, width: 100, height: 30))
+        mileageLabel.textAlignment = NSTextAlignment.left
+        mileageLabel.textColor = UIColor.black
         mileageLabel.text = "Tire Mileage"
         subview.addSubview(mileageLabel)
         
-        let mileageValueLabel = UILabel(frame: CGRectMake(110, 90, 100, 30))
-        mileageValueLabel.textAlignment = NSTextAlignment.Right
-        mileageValueLabel.textColor = UIColor.blackColor()
+        let mileageValueLabel = UILabel(frame: CGRect(x: 110, y: 90, width: 100, height: 30))
+        mileageValueLabel.textAlignment = NSTextAlignment.right
+        mileageValueLabel.textColor = UIColor.black
         mileageValueLabel.text = rating["t_mileage"] as! String!
         subview.addSubview(mileageValueLabel)
         
-        let ratingLabel = UILabel(frame: CGRectMake(10, 120, 100, 30))
-        ratingLabel.textAlignment = NSTextAlignment.Left
-        ratingLabel.textColor = UIColor.blackColor()
+        let ratingLabel = UILabel(frame: CGRect(x: 10, y: 120, width: 100, height: 30))
+        ratingLabel.textAlignment = NSTextAlignment.left
+        ratingLabel.textColor = UIColor.black
         ratingLabel.text = "Tire Rating"
         subview.addSubview(ratingLabel)
         
-        let ratingValueLabel = UILabel(frame: CGRectMake(110, 120, 100, 30))
-        ratingValueLabel.textAlignment = NSTextAlignment.Right
-        ratingValueLabel.textColor = UIColor.blackColor()
+        let ratingValueLabel = UILabel(frame: CGRect(x: 110, y: 120, width: 100, height: 30))
+        ratingValueLabel.textAlignment = NSTextAlignment.right
+        ratingValueLabel.textColor = UIColor.black
         ratingValueLabel.text = rating["t_rating"] as! String!
         subview.addSubview(ratingValueLabel)
         
@@ -171,36 +171,36 @@ class ChartViewController: UIViewController {
     
     // MARK: - IBAction
     
-    @IBAction func didToggleButtonPressed(sender: UIButton){
+    @IBAction func didToggleButtonPressed(_ sender: UIButton){
         if let tag = ToggleButtons(rawValue: sender.tag){
-            self.masterButton.backgroundColor = UIColor.clearColor()
-            self.advancedButton.backgroundColor = UIColor.clearColor()
-            self.intermediateButton.backgroundColor = UIColor.clearColor()
-            self.begginerButton.backgroundColor = UIColor.clearColor()
+            self.masterButton.backgroundColor = UIColor.clear
+            self.advancedButton.backgroundColor = UIColor.clear
+            self.intermediateButton.backgroundColor = UIColor.clear
+            self.begginerButton.backgroundColor = UIColor.clear
             
             sender.backgroundColor = UIColor(red: 16/255.0, green: 56/255.0, blue: 125/255.0, alpha: 1)
             
             switch tag {
-            case .Master:
+            case .master:
                 debugPrint("Master")
-            case .Advanced:
+            case .advanced:
                 debugPrint("Advanced")
-            case .Intermediate:
+            case .intermediate:
                 debugPrint("Intermediate")
-            case .Begginer:
+            case .begginer:
                 debugPrint("Begginer")
             }
         }
     }
     
-    @IBAction func didPressNotMyCarButton(sender: UIButton)
+    @IBAction func didPressNotMyCarButton(_ sender: UIButton)
     {
-        self.navigationController?.popViewControllerAnimated(true)
+        self.navigationController?.popViewController(animated: true)
     }
     
     // MARK: - Private Methods
     
-    private func sortPrices(prices: [String]) {
+    fileprivate func sortPrices(_ prices: [String]) {
         
         var intPrices: [Int] = []
         
@@ -208,7 +208,7 @@ class ChartViewController: UIViewController {
             intPrices.append((price as NSString).integerValue)
         }
         
-        intPrices.sortInPlace(<)
+        intPrices.sort(by: <)
         
         let lowValue = intPrices[0]
         let higherValue = intPrices.last
@@ -229,9 +229,9 @@ class ChartViewController: UIViewController {
         self.prices.removeAll()
     }
     
-    @IBAction func didPressButton(sender: UIButton)
+    @IBAction func didPressButton(_ sender: UIButton)
     {
-        self.navigationController?.popViewControllerAnimated(true)
+        self.navigationController?.popViewController(animated: true)
     }
     
 }

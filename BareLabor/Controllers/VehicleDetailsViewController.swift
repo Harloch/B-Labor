@@ -9,18 +9,18 @@
 import UIKit
 
 private enum TextfieldType: Int {
-    case None = 0
-    case VinNumber = 1
-    case Year = 2
-    case Make = 3
-    case Model = 4
-    case EngineSize = 5
+    case none = 0
+    case vinNumber = 1
+    case year = 2
+    case make = 3
+    case model = 4
+    case engineSize = 5
 }
 
 private enum InfoType: Int {
-    case Photo = 0
-    case VinNumber = 1
-    case Details = 2
+    case photo = 0
+    case vinNumber = 1
+    case details = 2
 }
 
 class VehicleDetailsViewController: BaseViewController, UITextFieldDelegate {
@@ -35,65 +35,65 @@ class VehicleDetailsViewController: BaseViewController, UITextFieldDelegate {
     @IBOutlet weak var submitResultButton: UIButton!
     
     
-    private var photo: UIImage?
-    private var selectedTextfieldFrame: CGRect = CGRectZero
-    private var selectedTextfieldType: TextfieldType = .None
-    private var keyboardHeight: CGFloat = 0
+    fileprivate var photo: UIImage?
+    fileprivate var selectedTextfieldFrame: CGRect = CGRect.zero
+    fileprivate var selectedTextfieldType: TextfieldType = .none
+    fileprivate var keyboardHeight: CGFloat = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Set VC title and back button
         self.navigationItem.title = "Vehicle Details"
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         
         self.vinNumberTextField.layer.borderWidth = 2
-        self.vinNumberTextField.layer.borderColor = UIColor.whiteColor().CGColor
-        var attributesDictionary = [NSForegroundColorAttributeName: UIColor.whiteColor(), NSFontAttributeName : UIFont.systemFontOfSize(18.0)]
+        self.vinNumberTextField.layer.borderColor = UIColor.white.cgColor
+        var attributesDictionary = [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName : UIFont.systemFont(ofSize: 18.0)]
         self.vinNumberTextField.attributedPlaceholder = NSAttributedString(string: "VIN NUMBER", attributes: attributesDictionary)
         
-        self.submitResultButton.layer.borderColor = UIColor.whiteColor().CGColor
+        self.submitResultButton.layer.borderColor = UIColor.white.cgColor
         
-        let fixedWidthBarItem = UIBarButtonItem(barButtonSystemItem: .FixedSpace, target: nil, action: nil)
+        let fixedWidthBarItem = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
         fixedWidthBarItem.width = 10
         
-        let keyboardToolbarItems = [fixedWidthBarItem, UIBarButtonItem(image: UIImage(named: "ToolbarGoBackward"), style: .Plain, target: self, action: "didPressKeyboardBackButton:"), fixedWidthBarItem, UIBarButtonItem(image: UIImage(named: "ToolbarGoForward"), style: .Plain, target: self, action: "didPressKeyboardForwardButton:"), UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)]
-        let yearToolbarItems = [fixedWidthBarItem, UIBarButtonItem(image: UIImage(named: "ToolbarGoBackward"), style: .Plain, target: self, action: "didPressKeyboardBackButton:"), fixedWidthBarItem, UIBarButtonItem(image: UIImage(named: "ToolbarGoForward"), style: .Plain, target: self, action: "didPressKeyboardForwardButton:"), UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil), UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: "didPressHideKeyboardButton:")]
+        let keyboardToolbarItems = [fixedWidthBarItem, UIBarButtonItem(image: UIImage(named: "ToolbarGoBackward"), style: .plain, target: self, action: #selector(VehicleDetailsViewController.didPressKeyboardBackButton(_:))), fixedWidthBarItem, UIBarButtonItem(image: UIImage(named: "ToolbarGoForward"), style: .plain, target: self, action: #selector(VehicleDetailsViewController.didPressKeyboardForwardButton(_:))), UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)]
+        let yearToolbarItems = [fixedWidthBarItem, UIBarButtonItem(image: UIImage(named: "ToolbarGoBackward"), style: .plain, target: self, action: #selector(VehicleDetailsViewController.didPressKeyboardBackButton(_:))), fixedWidthBarItem, UIBarButtonItem(image: UIImage(named: "ToolbarGoForward"), style: .plain, target: self, action: #selector(VehicleDetailsViewController.didPressKeyboardForwardButton(_:))), UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil), UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(VehicleDetailsViewController.didPressHideKeyboardButton(_:)))]
         
-        let textfieldToolbar = UIToolbar(frame: CGRectMake(0, 0, Constants.Size.ScreenWidth.floatValue, 44))
+        let textfieldToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: Constants.Size.screenWidth.floatValue, height: 44))
         textfieldToolbar.items = keyboardToolbarItems
         
-        let yearTextfieldToolbar = UIToolbar(frame: CGRectMake(0, 0, Constants.Size.ScreenWidth.floatValue, 44))
+        let yearTextfieldToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: Constants.Size.screenWidth.floatValue, height: 44))
         yearTextfieldToolbar.items = yearToolbarItems
         
         self.yearTextField.inputAccessoryView = yearTextfieldToolbar
-        attributesDictionary = [NSForegroundColorAttributeName: UIColor.whiteColor(), NSFontAttributeName : UIFont.systemFontOfSize(18.0)]
+        attributesDictionary = [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName : UIFont.systemFont(ofSize: 18.0)]
         self.yearTextField.attributedPlaceholder = NSAttributedString(string: "Year", attributes: attributesDictionary)
         
         self.makeTextField.inputAccessoryView = textfieldToolbar
-        attributesDictionary = [NSForegroundColorAttributeName: UIColor.whiteColor(), NSFontAttributeName : UIFont.systemFontOfSize(18.0)]
+        attributesDictionary = [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName : UIFont.systemFont(ofSize: 18.0)]
         self.makeTextField.attributedPlaceholder = NSAttributedString(string: "Make", attributes: attributesDictionary)
         
         self.modelTextField.inputAccessoryView = textfieldToolbar
-        attributesDictionary = [NSForegroundColorAttributeName: UIColor.whiteColor(), NSFontAttributeName : UIFont.systemFontOfSize(18.0)]
+        attributesDictionary = [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName : UIFont.systemFont(ofSize: 18.0)]
         self.modelTextField.attributedPlaceholder = NSAttributedString(string: "Model", attributes: attributesDictionary)
         
         self.engineSizeTextField.inputAccessoryView = textfieldToolbar
-        attributesDictionary = [NSForegroundColorAttributeName: UIColor.whiteColor(), NSFontAttributeName : UIFont.systemFontOfSize(18.0)]
+        attributesDictionary = [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName : UIFont.systemFont(ofSize: 18.0)]
         self.engineSizeTextField.attributedPlaceholder = NSAttributedString(string: "Engine Size", attributes: attributesDictionary)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.navigationController?.navigationBarHidden = false
+        self.navigationController?.isNavigationBarHidden = false
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "onKeyboardFrameChange:", name: UIKeyboardWillChangeFrameNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(VehicleDetailsViewController.onKeyboardFrameChange(_:)), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillChangeFrameNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -102,42 +102,42 @@ class VehicleDetailsViewController: BaseViewController, UITextFieldDelegate {
     
     // MARK: - IBActions
     
-    func didPressKeyboardBackButton(sender: UIBarButtonItem) {
+    func didPressKeyboardBackButton(_ sender: UIBarButtonItem) {
         
         switch self.selectedTextfieldType {
-        case .Make:
+        case .make:
             self.yearTextField.becomeFirstResponder()
-        case .Model:
+        case .model:
             self.makeTextField.becomeFirstResponder()
-        case .EngineSize:
+        case .engineSize:
             self.modelTextField.becomeFirstResponder()
         default:
             debugPrint("Not supported")
         }
     }
     
-    func didPressKeyboardForwardButton(sender: UIBarButtonItem) {
+    func didPressKeyboardForwardButton(_ sender: UIBarButtonItem) {
         
         switch self.selectedTextfieldType {
-        case .Year:
+        case .year:
             self.makeTextField.becomeFirstResponder()
-        case .Make:
+        case .make:
             self.modelTextField.becomeFirstResponder()
-        case .Model:
+        case .model:
             self.engineSizeTextField.becomeFirstResponder()
         default:
             debugPrint("Not supported")
         }
     }
     
-    func didPressHideKeyboardButton(sender: UIBarButtonItem) {
+    func didPressHideKeyboardButton(_ sender: UIBarButtonItem) {
         
-        if .Year == self.selectedTextfieldType {
+        if .year == self.selectedTextfieldType {
             self.yearTextField.resignFirstResponder()
         }
     }
     
-    @IBAction func didPressSubmitButton(sender: UIButton) {
+    @IBAction func didPressSubmitButton(_ sender: UIButton) {
         
         if nil != self.photo {
             
@@ -162,40 +162,40 @@ class VehicleDetailsViewController: BaseViewController, UITextFieldDelegate {
                     self.engineSizeTextField.becomeFirstResponder()
                 })
             } else {
-                self.performSegueWithIdentifier(ShowSegue.VehicleDetails.Search.rawValue, sender: InfoType.Details.rawValue)
+                self.performSegue(withIdentifier: ShowSegue.VehicleDetails.Search.rawValue, sender: InfoType.details.rawValue)
             }
         }
     }
     
     // MARK: - Private Methods
     
-    private func changeTableOffset() {
+    fileprivate func changeTableOffset() {
         
         let statusNavigationBarHeight: CGFloat = 64
         let textfieldYHeight = self.selectedTextfieldFrame.origin.y + self.selectedTextfieldFrame.size.height
-        let nonKeyboardHeight = Constants.Size.ScreenHeight.floatValue - self.keyboardHeight - statusNavigationBarHeight
+        let nonKeyboardHeight = Constants.Size.screenHeight.floatValue - self.keyboardHeight - statusNavigationBarHeight
         if textfieldYHeight > nonKeyboardHeight {
             
-            self.table.setContentOffset(CGPointMake(0, textfieldYHeight - nonKeyboardHeight - statusNavigationBarHeight + 10), animated: true)
+            self.table.setContentOffset(CGPoint(x: 0, y: textfieldYHeight - nonKeyboardHeight - statusNavigationBarHeight + 10), animated: true)
         }
     }
     
-    private func enableDisableButtonsInTextfield(textField: UITextField) {
+    fileprivate func enableDisableButtonsInTextfield(_ textField: UITextField) {
         
-        if let toolbar = textField.inputAccessoryView as? UIToolbar, type = TextfieldType(rawValue: textField.tag) {
+        if let toolbar = textField.inputAccessoryView as? UIToolbar, let type = TextfieldType(rawValue: textField.tag) {
             
             if let backButton = toolbar.items?[1] {
-                backButton.enabled = TextfieldType.Year != type
+                backButton.isEnabled = TextfieldType.year != type
             }
             if let forwardButton = toolbar.items?[3] {
-                forwardButton.enabled = TextfieldType.EngineSize != type
+                forwardButton.isEnabled = TextfieldType.engineSize != type
             }
         }
     }
     
     // MARK: - UITextFieldDelegate Methods
     
-    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         
         if let type = TextfieldType(rawValue: textField.tag) {
             self.selectedTextfieldType = type
@@ -206,45 +206,45 @@ class VehicleDetailsViewController: BaseViewController, UITextFieldDelegate {
         return true
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
     
     // MARK: - Keyboard Behavior
     
-    func onKeyboardFrameChange(sender: NSNotification) {
+    func onKeyboardFrameChange(_ sender: Notification) {
         
-        if let userInfo = sender.userInfo, keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue() {
+        if let userInfo = sender.userInfo, let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             
-            if keyboardFrame.origin.y < Constants.Size.ScreenHeight.floatValue {//Keyboard Up
+            if keyboardFrame.origin.y < Constants.Size.screenHeight.floatValue {//Keyboard Up
                 
-                self.table.scrollEnabled = false
+                self.table.isScrollEnabled = false
                 self.keyboardHeight = keyboardFrame.size.height
                 self.changeTableOffset()
             } else {//Keyboard Down
                 
-                self.table.scrollEnabled = true
+                self.table.isScrollEnabled = true
                 self.keyboardHeight = 0
-                self.selectedTextfieldFrame = CGRectZero
-                self.selectedTextfieldType = .None
-                self.table.setContentOffset(CGPointMake(0, -64), animated: true)
+                self.selectedTextfieldFrame = CGRect.zero
+                self.selectedTextfieldType = .none
+                self.table.setContentOffset(CGPoint(x: 0, y: -64), animated: true)
             }
         }
     }
     
     // MARK: - Navigation
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == ShowSegue.VehicleDetails.Search.rawValue {
             
-            if let senderValue = sender as? Int, goType = InfoType(rawValue: senderValue) {
+            if let senderValue = sender as? Int, let goType = InfoType(rawValue: senderValue) {
                 
-                let controller = segue.destinationViewController as! SearchViewController
+                let controller = segue.destination as! SearchViewController
                 
                 switch goType {
-                case .Details:
+                case .details:
                     controller.inputCarInfo = CarInfo(year: self.yearTextField.text, make: self.makeTextField.text, model: self.modelTextField.text, engineSize: self.engineSizeTextField.text)
                 default:
                     debugPrint("Unknown Type")

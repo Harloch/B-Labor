@@ -2,8 +2,8 @@
 //  WebService.swift
 //  Bowden
 //
-//  Created by super on 1/8/16.
-//  Copyright © 2016 super. All rights reserved.
+//  Created by Dustin Allen on 1/8/16.
+//  Copyright © 2016 BareLabor. All rights reserved.
 //
 
 import UIKit
@@ -18,13 +18,13 @@ class WebServiceObject: NSObject {
     
     
     // Post Request
-    static func postRequest(url: String, requestDict: Dictionary<String, String!>, completionHandler: ((AnyObject?, AnyObject?, NSError?) -> Void)) {
+    static func postRequest(_ url: String, requestDict: Dictionary<String, String?>, completionHandler: @escaping ((AnyObject?, AnyObject?, NSError?) -> Void)) {
         
         // create request data
         let urlString = "\(BASE_URL)\(API_PATH)\(url)"
-        let requestURL = NSURL(string: urlString)
-        let request = NSMutableURLRequest(URL: requestURL!)
-        request.HTTPMethod = "POST"
+        let requestURL = URL(string: urlString)
+        let request = NSMutableURLRequest(url: requestURL!)
+        request.httpMethod = "POST"
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         
@@ -35,22 +35,22 @@ class WebServiceObject: NSObject {
         
         for contentKey in contentKeys {
             if (!firstOneAdded) {
-                contentBodyAsString += contentKey + "=" + requestDict[contentKey]!
+                contentBodyAsString += contentKey + "=" + requestDict[contentKey]!!
                 firstOneAdded = true
             } else {
-                contentBodyAsString += "&" + contentKey + "=" + requestDict[contentKey]!
+                contentBodyAsString += "&" + contentKey + "=" + requestDict[contentKey]!!
             }
         }
         
-        request.HTTPBody = contentBodyAsString.dataUsingEncoding(NSUTF8StringEncoding)
+        request.httpBody = contentBodyAsString.data(using: String.Encoding.utf8)
         
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request) {data, response, error -> Void in
+        let task = URLSession.shared.dataTask(with: request, completionHandler: {data, response, error -> Void in
             do {
-                let jsonData = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary
+                let jsonData = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as! NSDictionary
                 completionHandler(jsonData, response, error)
             } catch {
             }
-        }
+        }) 
         task.resume()
     }
     

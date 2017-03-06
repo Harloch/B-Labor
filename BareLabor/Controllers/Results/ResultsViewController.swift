@@ -28,24 +28,24 @@ class ResultsViewController: BaseViewController , ResultsSlideViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if UIScreen.mainScreen().bounds.size.height == 480.0{
+        if UIScreen.main.bounds.size.height == 480.0{
             self.logoImage.image = nil
         }
         
         
-        self.collectionView.layer.borderColor = UIColor.whiteColor().CGColor
+        self.collectionView.layer.borderColor = UIColor.white.cgColor
         
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         
-        let sideButton = UIButton(frame:CGRectMake(0.0, 0.0, 19.0, 17.0))
-        sideButton.setBackgroundImage(UIImage(named: "SideMenuImage"), forState: UIControlState.Normal)
-        sideButton.addTarget(self, action: "showSideMenu:", forControlEvents: .TouchUpInside)
+        let sideButton = UIButton(frame:CGRect(x: 0.0, y: 0.0, width: 19.0, height: 17.0))
+        sideButton.setBackgroundImage(UIImage(named: "SideMenuImage"), for: UIControlState())
+        sideButton.addTarget(self, action: #selector(ResultsViewController.showSideMenu(_:)), for: .touchUpInside)
        
-        self.notMyCar.layer.borderColor = UIColor.whiteColor().CGColor
-        self.whatThePriceButton.layer.borderColor = UIColor.whiteColor().CGColor
-        self.findNearestLoctionButton.layer.borderColor = UIColor.whiteColor().CGColor
-        self.tellUsYourExpirienceButton.layer.borderColor = UIColor.whiteColor().CGColor
-        self.addAnotherService.layer.borderColor = UIColor.whiteColor().CGColor
+        self.notMyCar.layer.borderColor = UIColor.white.cgColor
+        self.whatThePriceButton.layer.borderColor = UIColor.white.cgColor
+        self.findNearestLoctionButton.layer.borderColor = UIColor.white.cgColor
+        self.tellUsYourExpirienceButton.layer.borderColor = UIColor.white.cgColor
+        self.addAnotherService.layer.borderColor = UIColor.white.cgColor
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView:sideButton )
         
@@ -56,14 +56,14 @@ class ResultsViewController: BaseViewController , ResultsSlideViewDelegate {
         // Do any additional setup after loading the view.
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.calculateOffsetForCollectionItems(self.buttons)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.navigationBarHidden = false
+        self.navigationController?.isNavigationBarHidden = false
     }
 
     override func didReceiveMemoryWarning() {
@@ -71,54 +71,54 @@ class ResultsViewController: BaseViewController , ResultsSlideViewDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    func collectionView(collectionView: UICollectionView,
+    func collectionView(_ collectionView: UICollectionView,
         numberOfItemsInSection section: Int) -> Int{
             return self.buttons.count;
     }
     
-    func collectionView(collectionView: UICollectionView,
-        cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell{
-            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Identifier", forIndexPath: indexPath) as! ButtonsCollectionViewCell
+    func collectionView(_ collectionView: UICollectionView,
+        cellForItemAtIndexPath indexPath: IndexPath) -> UICollectionViewCell{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Identifier", for: indexPath) as! ButtonsCollectionViewCell
             
             cell.title.text = self.buttons[indexPath.row]
-            cell.title.textColor = UIColor.whiteColor()
+            cell.title.textColor = UIColor.white
             cell.backgroundColor = UIColor(red: 30/255.0, green: 104/255.0, blue: 229/255.0, alpha: 1)
             
             if self.selectedButton == indexPath.row{
                 cell.title.textColor = UIColor(red: 30/255.0, green: 104/255.0, blue: 229/255.0, alpha: 1)
-                cell.backgroundColor = UIColor.whiteColor()
+                cell.backgroundColor = UIColor.white
             }
             
             
             return cell
     }
     
-    func collectionView( collectionView: UICollectionView,
+    func collectionView( _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat{
         return 2
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize{
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: IndexPath) -> CGSize{
         
         let string = self.buttons[indexPath.row] as String
         let myString = NSString(string: string)
-        let width = myString.boundingRectWithSize(CGSizeMake(CGFloat.max, self.collectionView.frame.size.height), options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: [NSFontAttributeName : UIFont.systemFontOfSize(14.0)], context: nil).width
+        let width = myString.boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: self.collectionView.frame.size.height), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSFontAttributeName : UIFont.systemFont(ofSize: 14.0)], context: nil).width
         
-        let size = CGSizeMake(round(width) + 20 + CGFloat(self.offset), self.collectionView.frame.size.height)
+        let size = CGSize(width: round(width) + 20 + CGFloat(self.offset), height: self.collectionView.frame.size.height)
         return size
     }
     
-    func collectionView( collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath){
+    func collectionView( _ collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: IndexPath){
         self.selectedButton = indexPath.row
         collectionView.reloadData()
     }
     
-    private func calculateOffsetForCollectionItems(array: [String]){
+    fileprivate func calculateOffsetForCollectionItems(_ array: [String]){
         
         for string in array{
             let myString = NSString(string: string)
-            let width = myString.boundingRectWithSize(CGSizeMake(CGFloat.max, self.collectionView.frame.size.height), options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: [NSFontAttributeName : UIFont.systemFontOfSize(14.0)], context: nil).width
+            let width = myString.boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: self.collectionView.frame.size.height), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSFontAttributeName : UIFont.systemFont(ofSize: 14.0)], context: nil).width
                 self.offset += round(width) + 20.0 + 2.0
         }
         if self.offset < self.collectionView.bounds.size.width{
@@ -131,9 +131,9 @@ class ResultsViewController: BaseViewController , ResultsSlideViewDelegate {
     
     //MARK: - Private methods
     
-    func showSideMenu(sender: UIButton?){
-        self.slideMenu.hidden = false
-        UIView.animateWithDuration(0.5, animations: { () -> Void in
+    func showSideMenu(_ sender: UIButton?){
+        self.slideMenu.isHidden = false
+        UIView.animate(withDuration: 0.5, animations: { () -> Void in
             if self.sideMenuTralingConstraint.constant == 0{
                 self.sideMenuTralingConstraint.constant = -270
                 
@@ -144,27 +144,26 @@ class ResultsViewController: BaseViewController , ResultsSlideViewDelegate {
             }
             self.view.layoutSubviews()
             },completion: { (finished: Bool) -> Void in
-                self.slideMenu.hidden = self.sideMenuTralingConstraint.constant != 0
+                self.slideMenu.isHidden = self.sideMenuTralingConstraint.constant != 0
                 
         });
     }
     
-    func resultsSlideDidSelectItem(item: ResultsSlideItem){
+    func resultsSlideDidSelectItem(_ item: ResultsSlideItem){
         self.showSideMenu(nil)
         switch item {
-        case .NewSearch:
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.5 * Double(NSEC_PER_SEC))
-                ), dispatch_get_main_queue(), { () -> Void in
-                self.navigationController?.popToRootViewControllerAnimated(true)
+        case .newSearch:
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: { () -> Void in
+                self.navigationController?.popToRootViewController(animated: true)
             })
-        case .Settings:
-            self.performSegueWithIdentifier(ShowSegue.Results.Settings.rawValue, sender: nil)
+        case .settings:
+            self.performSegue(withIdentifier: ShowSegue.Results.Settings.rawValue, sender: nil)
         }
     }
 
     //MARK: - IBActions
     
-    @IBAction func didCahngeSegment(sender: UISegmentedControl) {
+    @IBAction func didCahngeSegment(_ sender: UISegmentedControl) {
         
     }
 
@@ -172,7 +171,7 @@ class ResultsViewController: BaseViewController , ResultsSlideViewDelegate {
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == ShowSegue.Results.Settings.rawValue{
             
         }

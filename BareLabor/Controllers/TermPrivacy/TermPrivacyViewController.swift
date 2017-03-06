@@ -18,27 +18,27 @@ class TermPrivacyViewController: UIViewController {
         
         // Set navigation title and show
         self.navigationItem.title = "Need A Tire"
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
-        self.navigationController?.navigationBarHidden = false
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        self.navigationController?.isNavigationBarHidden = false
         if let item = SettingsButtonTags(rawValue: self.showContent.rawValue){
             
             var path = ""
-            let bundle = NSBundle.mainBundle()
+            let bundle = Bundle.main
             switch item {
-            case .PrivacyPolicy :
+            case .privacyPolicy :
                 self.navigationItem.title = "Privacy Policy"
-                path = bundle.pathForResource("Privacy Policy", ofType: "txt")!
+                path = bundle.path(forResource: "Privacy Policy", ofType: "txt")!
                 do {
-                    let strPrivacy = try NSString(contentsOfFile: path, encoding: NSUTF8StringEncoding) as NSString
+                    let strPrivacy = try NSString(contentsOfFile: path, encoding: String.Encoding.utf8.rawValue) as NSString
                     
                     let fontSize : CGFloat = 14.0
-                    let subAttrs = [NSFontAttributeName : UIFont.boldSystemFontOfSize(fontSize), NSForegroundColorAttributeName : UIColor.whiteColor()]
-                    let attrs = [NSFontAttributeName : UIFont.systemFontOfSize(fontSize), NSForegroundColorAttributeName : UIColor.whiteColor()]
+                    let subAttrs = [NSFontAttributeName : UIFont.boldSystemFont(ofSize: fontSize), NSForegroundColorAttributeName : UIColor.white]
+                    let attrs = [NSFontAttributeName : UIFont.systemFont(ofSize: fontSize), NSForegroundColorAttributeName : UIColor.white]
                     let attributedString = NSMutableAttributedString(string: strPrivacy as String, attributes: attrs )
                     
                     
-                    let range : NSRange = strPrivacy.rangeOfString("Third party applications")
-                    let range1 : NSRange = strPrivacy.rangeOfString("Location data")
+                    let range : NSRange = strPrivacy.range(of: "Third party applications")
+                    let range1 : NSRange = strPrivacy.range(of: "Location data")
                     
                     
                     attributedString.addAttributes(subAttrs, range: range)
@@ -47,43 +47,43 @@ class TermPrivacyViewController: UIViewController {
                     self.textView?.attributedText = attributedString
                 }
                 catch {/* error handling here */}
-            case .TermOfUse :
+            case .termOfUse :
                 do {
                     self.navigationItem.title = "Term Of Use"
-                    path = bundle.pathForResource("Term of use", ofType: "txt")!
-                    let strPrivacy = try NSString(contentsOfFile: path, encoding: NSUTF8StringEncoding) as NSString
+                    path = bundle.path(forResource: "Term of use", ofType: "txt")!
+                    let strPrivacy = try NSString(contentsOfFile: path, encoding: String.Encoding.utf8.rawValue) as NSString
                     
                     let fontSize : CGFloat = 14.0
-                    let subAttrs = [NSFontAttributeName : UIFont.boldSystemFontOfSize(fontSize), NSForegroundColorAttributeName : UIColor.whiteColor()]
-                    let attrs = [NSFontAttributeName : UIFont.systemFontOfSize(fontSize), NSForegroundColorAttributeName : UIColor.whiteColor()]
+                    let subAttrs = [NSFontAttributeName : UIFont.boldSystemFont(ofSize: fontSize), NSForegroundColorAttributeName : UIColor.white]
+                    let attrs = [NSFontAttributeName : UIFont.systemFont(ofSize: fontSize), NSForegroundColorAttributeName : UIColor.white]
                     let attributedString = NSMutableAttributedString(string: strPrivacy as String, attributes: attrs )
                     
                     
-                    let range : NSRange = strPrivacy.rangeOfString("Effective Date: May 28, 2015")
-                    let range1 : NSRange = strPrivacy.rangeOfString("1. Your relationship with BareLabor")
-                    let range2 : NSRange = strPrivacy.rangeOfString("2. Accepting this Agreement")
-                    let range3 : NSRange = strPrivacy.rangeOfString("3. Provision of the Services by BareLabor")
-                    let range4 : NSRange = strPrivacy.rangeOfString("4. Use of the Services by you")
-                    let range5 : NSRange = strPrivacy.rangeOfString("5. Your passwords and account security")
-                    let range6 : NSRange = strPrivacy.rangeOfString("6. Privacy and your personal information")
-                    let range7 : NSRange = strPrivacy.rangeOfString("7. Content in the Services")
-                    let range8 : NSRange = strPrivacy.rangeOfString("8. BareLabor Pic Your Price")
-                    let range9 : NSRange = strPrivacy.rangeOfString("Step 1: Where Will You be Coming from?")
-                    let range10 : NSRange = strPrivacy.rangeOfString("Step 2: What Vehicle Needs to be Serviced?")
-                    let range11 : NSRange = strPrivacy.rangeOfString("Step 3: Do You Know What Service You Need?")
-                    let range12 : NSRange = strPrivacy.rangeOfString("9. BareLabor Pic Your Price Service")
-                    let range13 : NSRange = strPrivacy.rangeOfString("10. Proprietary rights")
-                    let range14 : NSRange = strPrivacy.rangeOfString("11. Content license from you")
-                    let range15 : NSRange = strPrivacy.rangeOfString("12. Termination by BareLabor")
-                    let range16 : NSRange = strPrivacy.rangeOfString("13. EXCLUSION OF WARRANTIES")
-                    let range17 : NSRange = strPrivacy.rangeOfString("14. LIMITATION OF LIABILITY")
-                    let range18 : NSRange = strPrivacy.rangeOfString("15. Indemnification")
-                    let range19 : NSRange = strPrivacy.rangeOfString("16. Dispute Resolution and Class Action Waiver")
-                    let range20 : NSRange = strPrivacy.rangeOfString("17. Copyright policies")
-                    let range21 : NSRange = strPrivacy.rangeOfString("18. Advertisements")
-                    let range22 : NSRange = strPrivacy.rangeOfString("19. Other content")
-                    let range23 : NSRange = strPrivacy.rangeOfString("20. Changes to this Agreement")
-                    let range24 : NSRange = strPrivacy.rangeOfString("21. General legal terms")
+                    let range : NSRange = strPrivacy.range(of: "Effective Date: May 28, 2015")
+                    let range1 : NSRange = strPrivacy.range(of: "1. Your relationship with BareLabor")
+                    let range2 : NSRange = strPrivacy.range(of: "2. Accepting this Agreement")
+                    let range3 : NSRange = strPrivacy.range(of: "3. Provision of the Services by BareLabor")
+                    let range4 : NSRange = strPrivacy.range(of: "4. Use of the Services by you")
+                    let range5 : NSRange = strPrivacy.range(of: "5. Your passwords and account security")
+                    let range6 : NSRange = strPrivacy.range(of: "6. Privacy and your personal information")
+                    let range7 : NSRange = strPrivacy.range(of: "7. Content in the Services")
+                    let range8 : NSRange = strPrivacy.range(of: "8. BareLabor Pic Your Price")
+                    let range9 : NSRange = strPrivacy.range(of: "Step 1: Where Will You be Coming from?")
+                    let range10 : NSRange = strPrivacy.range(of: "Step 2: What Vehicle Needs to be Serviced?")
+                    let range11 : NSRange = strPrivacy.range(of: "Step 3: Do You Know What Service You Need?")
+                    let range12 : NSRange = strPrivacy.range(of: "9. BareLabor Pic Your Price Service")
+                    let range13 : NSRange = strPrivacy.range(of: "10. Proprietary rights")
+                    let range14 : NSRange = strPrivacy.range(of: "11. Content license from you")
+                    let range15 : NSRange = strPrivacy.range(of: "12. Termination by BareLabor")
+                    let range16 : NSRange = strPrivacy.range(of: "13. EXCLUSION OF WARRANTIES")
+                    let range17 : NSRange = strPrivacy.range(of: "14. LIMITATION OF LIABILITY")
+                    let range18 : NSRange = strPrivacy.range(of: "15. Indemnification")
+                    let range19 : NSRange = strPrivacy.range(of: "16. Dispute Resolution and Class Action Waiver")
+                    let range20 : NSRange = strPrivacy.range(of: "17. Copyright policies")
+                    let range21 : NSRange = strPrivacy.range(of: "18. Advertisements")
+                    let range22 : NSRange = strPrivacy.range(of: "19. Other content")
+                    let range23 : NSRange = strPrivacy.range(of: "20. Changes to this Agreement")
+                    let range24 : NSRange = strPrivacy.range(of: "21. General legal terms")
                     
                     attributedString.addAttributes(subAttrs, range: range)
                     attributedString.addAttributes(subAttrs, range: range1)

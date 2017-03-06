@@ -9,11 +9,11 @@
 import UIKit
 
 enum SettingsButtonTags: Int {
-    case Home = 4
-    case ViewMyHistory = 0
-    case PrivacyPolicy = 1
-    case TermOfUse = 2
-    case LoginOut = 3
+    case home = 4
+    case viewMyHistory = 0
+    case privacyPolicy = 1
+    case termOfUse = 2
+    case loginOut = 3
 }
 
 class SettingsViewController: UIViewController {
@@ -27,15 +27,15 @@ class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         
         self.navigationItem.title = "Settings"
-        self.navigationController?.navigationBarHidden = true
-        self.viewMyHistory.layer.borderColor = UIColor.whiteColor().CGColor
-        self.privacyPolicy.layer.borderColor = UIColor.whiteColor().CGColor
-        self.termsOfUse.layer.borderColor = UIColor.whiteColor().CGColor
-        self.loginOut.layer.borderColor = UIColor.whiteColor().CGColor
-        self.homeBtn.layer.borderColor = UIColor.whiteColor().CGColor
+        self.navigationController?.isNavigationBarHidden = true
+        self.viewMyHistory.layer.borderColor = UIColor.white.cgColor
+        self.privacyPolicy.layer.borderColor = UIColor.white.cgColor
+        self.termsOfUse.layer.borderColor = UIColor.white.cgColor
+        self.loginOut.layer.borderColor = UIColor.white.cgColor
+        self.homeBtn.layer.borderColor = UIColor.white.cgColor
         
         self.setLoginButtonText() //check on login
         
@@ -45,35 +45,35 @@ class SettingsViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    override func viewWillAppear(animated: Bool) {
-        self.navigationController?.navigationBarHidden = true
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.isNavigationBarHidden = true
     }
     
     //MARK: - IBAction methods
     
-    @IBAction func didSettingsButtonsPressed(sender: UIButton){
+    @IBAction func didSettingsButtonsPressed(_ sender: UIButton){
         if let item = SettingsButtonTags(rawValue: sender.tag){
             switch item {
-            case .Home:
-                let mainMenuViewController = self.storyboard?.instantiateViewControllerWithIdentifier("MainMenuViewController") as! MainMenuViewController!
-                self.navigationController?.pushViewController(mainMenuViewController, animated: true)
+            case .home:
+                let mainMenuViewController = self.storyboard?.instantiateViewController(withIdentifier: "MainMenuViewController") as! MainMenuViewController!
+                self.navigationController?.pushViewController(mainMenuViewController!, animated: true)
                 break;
-            case .ViewMyHistory :
+            case .viewMyHistory :
                 // If not logged in display alert.
-                if NSUserDefaults.standardUserDefaults().objectForKey("userID") == nil
+                if UserDefaults.standard.object(forKey: "userID") == nil
                 {
                     CommonUtils.showAlert("Sorry", message: "You have must login/register to use this feature.")
                     return
                 }
                 // If there's no history avaiable display alerts
-                if NSUserDefaults.standardUserDefaults().objectForKey("estimateID") == nil
+                if UserDefaults.standard.object(forKey: "estimateID") == nil
                 {
                     CommonUtils.showAlert("Sorry", message: "No History is Available.")
                     return
                 }
                 
-                let userID = NSUserDefaults.standardUserDefaults().objectForKey("userID") as! String!
-                let estimateIDNumber = NSUserDefaults.standardUserDefaults().objectForKey("estimateID") as! NSNumber!
+                let userID = UserDefaults.standard.object(forKey: "userID") as! String!
+                let estimateIDNumber = UserDefaults.standard.object(forKey: "estimateID") as! NSNumber!
                 let estimateID = "\(estimateIDNumber)" as String!
                 
                 let dict = ["userID": userID, "estimateID": estimateID]
@@ -82,7 +82,7 @@ class SettingsViewController: UIViewController {
                     
                     // hide progress in main queue
                     
-                    dispatch_async(dispatch_get_main_queue(), {() -> Void in
+                    DispatchQueue.main.async(execute: {() -> Void in
                         
                         CommonUtils.hideProgress()
                     })
@@ -99,7 +99,7 @@ class SettingsViewController: UIViewController {
                             
                             if highCost == "" || averageCost == "" || lowCost == "" {
                                 print("failed")
-                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                DispatchQueue.main.async(execute: { () -> Void in
                                     CommonUtils.showAlert("Almost There!", message: "Your last submission was not confirmed yet. Please try again soon.")
                                 })
                                 return
@@ -107,8 +107,8 @@ class SettingsViewController: UIViewController {
                             ChartViewController.lowValue = lowCost
                             ChartViewController.averageValue = averageCost
                             ChartViewController.highValue = highCost
-                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                let chartViewController = self.storyboard?.instantiateViewControllerWithIdentifier("ChartViewController") as! ChartViewController!
+                            DispatchQueue.main.async(execute: { () -> Void in
+                                let chartViewController = self.storyboard?.instantiateViewController(withIdentifier: "ChartViewController") as! ChartViewController!
                                 self.navigationController?.pushViewController(chartViewController, animated: true)
                                 
                             })
@@ -123,11 +123,11 @@ class SettingsViewController: UIViewController {
                         return
                     }
                 }
-            case .PrivacyPolicy :
-                self.performSegueWithIdentifier(ShowSegue.Settings.TermPrivacy.rawValue, sender: SettingsButtonTags.PrivacyPolicy.rawValue)
-            case .TermOfUse :
-                self.performSegueWithIdentifier(ShowSegue.Settings.TermPrivacy.rawValue, sender: SettingsButtonTags.TermOfUse.rawValue)
-            case .LoginOut :
+            case .privacyPolicy :
+                self.performSegue(withIdentifier: ShowSegue.Settings.TermPrivacy.rawValue, sender: SettingsButtonTags.privacyPolicy.rawValue)
+            case .termOfUse :
+                self.performSegue(withIdentifier: ShowSegue.Settings.TermPrivacy.rawValue, sender: SettingsButtonTags.termOfUse.rawValue)
+            case .loginOut :
                 debugPrint("LOGIN OUT")
                 self.toggleLoginButton() // check on login
             }
@@ -136,46 +136,46 @@ class SettingsViewController: UIViewController {
     
     // Set Login Button Text
     func setLoginButtonText(){
-        let defaults = NSUserDefaults.standardUserDefaults()
-        let userID = defaults.valueForKey("userID")
+        let defaults = UserDefaults.standard
+        let userID = defaults.value(forKey: "userID")
         if userID != nil {
             self.loginStatus = true
-            self.loginOut.setTitle("LOGOUT", forState: .Normal)
+            self.loginOut.setTitle("LOGOUT", for: UIControlState())
         }
         else{
             self.loginStatus = false
-            self.loginOut.setTitle("LOGIN", forState: .Normal)
+            self.loginOut.setTitle("LOGIN", for: UIControlState())
         }
         
     }
     // MARK: - Private methods
     
     func toggleLoginButton() {
-        let defaults = NSUserDefaults.standardUserDefaults()
+        let defaults = UserDefaults.standard
         if self.loginStatus {
-            defaults.removeObjectForKey("userID")
+            defaults.removeObject(forKey: "userID")
             CommonUtils.showAlert("OK", message: "You have successfully logged out this app.")
             self.loginStatus = !self.loginStatus
         }
         else {
             self.loginStatus = !self.loginStatus
-            if let signUpController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier(SignUpViewController.storyboardID) as? SignUpViewController {
+            if let signUpController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: SignUpViewController.storyboardID) as? SignUpViewController {
                 self.navigationController?.pushViewController(signUpController, animated: false)
             }
         }
         
         let title = (self.loginStatus) ? "LOGOUT" : "LOGIN"
-        self.loginOut.setTitle(title, forState: .Normal)
+        self.loginOut.setTitle(title, for: UIControlState())
     }
     
     // MARK: - Navigation
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == ShowSegue.Settings.TermPrivacy.rawValue {
-            if let senderValue = sender as? Int, goType = SettingsButtonTags(rawValue: senderValue) {
+            if let senderValue = sender as? Int, let goType = SettingsButtonTags(rawValue: senderValue) {
                 
-                let controller = segue.destinationViewController as! TermPrivacyViewController
+                let controller = segue.destination as! TermPrivacyViewController
                 controller.showContent = goType
                 
                 

@@ -18,7 +18,7 @@ class SearchViewController: BaseViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         
         self.inputCarInfoView.setYear(self.inputCarInfo.year, make: self.inputCarInfo.make, model: self.inputCarInfo.model, engineSize: self.inputCarInfo.engineSize)
     }
@@ -29,20 +29,20 @@ class SearchViewController: BaseViewController, UITextFieldDelegate {
     
     // MARK: - UITextFieldDelegate Method
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
         if "" != textField.text {
-            self.performSegueWithIdentifier(ShowSegue.Search.PartsAndLabor.rawValue, sender: nil)
+            self.performSegue(withIdentifier: ShowSegue.Search.PartsAndLabor.rawValue, sender: nil)
         }
         return true
     }
     
     // MARK: - Navigation
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == ShowSegue.Search.PartsAndLabor.rawValue {
-            let controller = segue.destinationViewController as! PartsAndLaborViewController
+            let controller = segue.destination as! PartsAndLaborViewController
             controller.searchText = self.searchTextField.text
             controller.inputCarInfo = self.inputCarInfo
         }

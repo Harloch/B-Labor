@@ -23,17 +23,17 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
     
     // MARK: - IBActions
     
-    @IBAction func didPressCancelButton(sender: UIBarButtonItem) {
-        self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func didPressCancelButton(_ sender: UIBarButtonItem) {
+        self.navigationController?.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func didPressLoginButton(sender: UIButton) {
-        self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func didPressLoginButton(_ sender: UIButton) {
+        self.navigationController?.dismiss(animated: true, completion: nil)
     }
     
     // MARK: - UITextFieldDelegate Method
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }

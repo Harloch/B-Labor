@@ -10,7 +10,7 @@ import UIKit
 
 protocol CallOrLocationButtonDelegate {
     
-    func callOrLocationButtonPressed(item: NSIndexPath, sentderTag:Int)
+    func callOrLocationButtonPressed(_ item: IndexPath, sentderTag:Int)
 }
 
 class LocationCell: UITableViewCell {
@@ -20,7 +20,7 @@ class LocationCell: UITableViewCell {
     @IBOutlet weak var callButton: UIButton!
     @IBOutlet weak var locationButton: UIButton!
     
-    var indexPath : NSIndexPath!
+    var indexPath : IndexPath!
     
     var delegate: CallOrLocationButtonDelegate?
     
@@ -29,11 +29,11 @@ class LocationCell: UITableViewCell {
         // Initialization code
     }
     
-    @IBAction func didCallOrLocationButtonPressed (sender: UIButton!){
+    @IBAction func didCallOrLocationButtonPressed (_ sender: UIButton!){
         self.delegate?.callOrLocationButtonPressed(self.indexPath, sentderTag: sender.tag)
     }
 
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state

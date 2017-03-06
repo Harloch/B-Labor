@@ -9,8 +9,8 @@
 import UIKit
 
 enum ExperienceType: Int {
-    case Negative = 0
-    case Positive = 1
+    case negative = 0
+    case positive = 1
 }
 
 class ExperienceViewController: UIViewController {
@@ -20,10 +20,10 @@ class ExperienceViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.navigationController?.navigationBarHidden = false
+        self.navigationController?.isNavigationBarHidden = false
         self.navigationItem.title = "Tell Us Your Experience"
         
-        if 480 == UIScreen.mainScreen().bounds.size.height {
+        if 480 == UIScreen.main.bounds.size.height {
             self.buttonsTopOffset.constant = -30
         }
     }
@@ -35,13 +35,13 @@ class ExperienceViewController: UIViewController {
     
     // MARK: - IBActions
     
-    @IBAction func didPosititveNegativeButtonPressed(sender: UIButton){
+    @IBAction func didPosititveNegativeButtonPressed(_ sender: UIButton){
         if let type = ExperienceType(rawValue: sender.tag){
             switch type {
-            case .Positive:
-                self.performSegueWithIdentifier(ShowSegue.Experience.PositiveNegative.rawValue, sender: ExperienceType.Positive.rawValue)
-            case .Negative:
-                self.performSegueWithIdentifier(ShowSegue.Experience.PositiveNegative.rawValue, sender: ExperienceType.Negative.rawValue)
+            case .positive:
+                self.performSegue(withIdentifier: ShowSegue.Experience.PositiveNegative.rawValue, sender: ExperienceType.positive.rawValue)
+            case .negative:
+                self.performSegue(withIdentifier: ShowSegue.Experience.PositiveNegative.rawValue, sender: ExperienceType.negative.rawValue)
             }
         }
     }
@@ -50,10 +50,10 @@ class ExperienceViewController: UIViewController {
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == ShowSegue.Experience.PositiveNegative.rawValue {
-            if let senderValue = sender as? Int, goType = ExperienceType(rawValue: senderValue) {
-                let controller = segue.destinationViewController as! PositiveNegativeViewController
+            if let senderValue = sender as? Int, let goType = ExperienceType(rawValue: senderValue) {
+                let controller = segue.destination as! PositiveNegativeViewController
                 controller.experience = goType
             }
         }

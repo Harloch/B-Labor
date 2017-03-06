@@ -1,0 +1,6 @@
+framework module Pods_BareLaborUITests {
+  umbrella header "Pods-BareLaborUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}

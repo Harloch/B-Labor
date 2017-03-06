@@ -23,7 +23,7 @@ class CarInfoView: UIView {
     override init(frame: CGRect) {
        super.init(frame: frame)
         
-        if let view = NSBundle.mainBundle().loadNibNamed("CarInfoView", owner: self, options: nil).first as? UIView {
+        if let view = Bundle.main.loadNibNamed("CarInfoView", owner: self, options: nil)?.first as? UIView {
             view.frame = frame
             view.layoutSubviews()
             view.updateConstraints()
@@ -42,21 +42,21 @@ class CarInfoView: UIView {
     
     // MARK: - Public Nethod
     
-    func setYear(year: String, make: String, model: String, engineSize: String) {
+    func setYear(_ year: String, make: String, model: String, engineSize: String) {
         
-        let minLabelWidth : CGFloat = (UIScreen.mainScreen().bounds.size.width - (8 * 4) - (24 * 3)) / 3
+        let minLabelWidth : CGFloat = (UIScreen.main.bounds.size.width - (8 * 4) - (24 * 3)) / 3
         
         self.yearLabel.text = year
-        self.yearLabelWidth.constant = min(minLabelWidth, self.yearLabel.sizeThatFits(CGSizeMake(CGFloat.max, self.bounds.height)).width + 5)
+        self.yearLabelWidth.constant = min(minLabelWidth, self.yearLabel.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: self.bounds.height)).width + 5)
         
         self.makeLabel.text = make
-        self.makeLabelWidth.constant = min(minLabelWidth, self.makeLabel.sizeThatFits(CGSizeMake(CGFloat.max, self.bounds.height)).width + 5)
+        self.makeLabelWidth.constant = min(minLabelWidth, self.makeLabel.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: self.bounds.height)).width + 5)
         
         self.modelLabel.text = model
-        self.modelLabelWidth.constant = min(minLabelWidth, self.modelLabel.sizeThatFits(CGSizeMake(CGFloat.max, self.bounds.height)).width + 5)
+        self.modelLabelWidth.constant = min(minLabelWidth, self.modelLabel.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: self.bounds.height)).width + 5)
         
         self.engineSizeLabel.text = engineSize
-        self.engineSizeLabelWidth.constant = self.engineSizeLabel.sizeThatFits(CGSizeMake(CGFloat.max, self.bounds.height)).width + 5
+        self.engineSizeLabelWidth.constant = self.engineSizeLabel.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: self.bounds.height)).width + 5
         
         
         

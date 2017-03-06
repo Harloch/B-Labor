@@ -13,7 +13,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     
     var manager: CLLocationManager?
     
-    private var locationCompletion: ((error: NSError?) -> Void)?
+    fileprivate var locationCompletion: ((_ error: NSError?) -> Void)?
     
     class var sharedInstance: LocationManager {
         
@@ -25,7 +25,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     
     // MARK: - Public Methods
     
-    func startManagerWithCompletion(completion: ((error: NSError?) -> Void)?) {
+    func startManagerWithCompletion(_ completion: ((_ error: NSError?) -> Void)?) {
         
         if nil == self.manager {
             self.manager = CLLocationManager()
@@ -42,18 +42,18 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         }
     }
     
-    func distanseToLocationWithLatitude(latitude: Double, longitude: Double) -> Double {
+    func distanseToLocationWithLatitude(_ latitude: Double, longitude: Double) -> Double {
         
         if let myLocation = self.manager!.location {
             
             let location = CLLocation(latitude: latitude, longitude: longitude)
-            let meters = myLocation.distanceFromLocation(location) as Double
+            let meters = myLocation.distance(from: location) as Double
             return (meters/1000) / 1.61
         }
         return 0
     }
     
-    class func getFullAddressStringFromInfo(locationInfo: [String:AnyObject], addAddress shouldAddAddress: Bool) -> String {
+    class func getFullAddressStringFromInfo(_ locationInfo: [String:AnyObject], addAddress shouldAddAddress: Bool) -> String {
         
         var fullAddress = ""
         let zipcode = locationInfo["f_zipcode"] as? String ?? ""
@@ -79,7 +79,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
             }
             if "" == distance {
                 
-                if let f_lat = locationInfo["f_lat"] as? Double, f_lng = locationInfo["f_lng"] as? Double {
+                if let f_lat = locationInfo["f_lat"] as? Double, let f_lng = locationInfo["f_lng"] as? Double {
                     let distanceValue = LocationManager.sharedInstance.distanseToLocationWithLatitude(f_lat, longitude: f_lng)
                     if 0 != distanceValue {
                         distance = "\(distanceValue)"
@@ -92,9 +92,9 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
                     distance = String(format: "%.2f mi", distanceValue)
                 } else {
                     let distanceString = NSString(string: distance)
-                    let range = distanceString.rangeOfString(".")
+                    let range = distanceString.range(of: ".")
                     if NSNotFound != range.location && distanceString.length > range.location + 2 {
-                        distance = distanceString.substringToIndex(range.location + 2) + " mi"
+                        distance = distanceString.substring(to: range.location + 2) + " mi"
                     } else {
                         distance += " mi"
                     }
@@ -125,48 +125,49 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         return fullAddress
     }
     
-    class func callToThePhone(var phone: String) {
+    class func callToThePhone(_ phone: String) {
+        var phone = phone
         
-        phone = phone.stringByReplacingOccurrencesOfString(" ", withString: "")
-        phone = phone.stringByReplacingOccurrencesOfString("-", withString: "")
-        phone = phone.stringByReplacingOccurrencesOfString("(", withString: "")
-        phone = phone.stringByReplacingOccurrencesOfString(")", withString: "")
-        if let url = NSURL(string: "tel://" + phone) {
-            UIApplication.sharedApplication().openURL(url)
+        phone = phone.replacingOccurrences(of: " ", with: "")
+        phone = phone.replacingOccurrences(of: "-", with: "")
+        phone = phone.replacingOccurrences(of: "(", with: "")
+        phone = phone.replacingOccurrences(of: ")", with: "")
+        if let url = URL(string: "tel://" + phone) {
+            UIApplication.shared.openURL(url)
         }
     }
     
     // MARK: - CLLocationManagerDelegate
     
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
         if nil != self.locationCompletion {
-            self.locationCompletion!(error: nil)
+            self.locationCompletion!(nil)
             self.manager?.stopUpdatingLocation()
             self.locationCompletion = nil
         }
     }
     
-    func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         
         if nil != self.locationCompletion {
-            self.locationCompletion!(error: error)
+            self.locationCompletion!(error as NSError?)
             self.manager?.stopUpdatingLocation()
             self.locationCompletion = nil
         }
     }
     
-    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         
         var locationStatus: String?
         
         switch status {
-        case CLAuthorizationStatus.Restricted:
+        case CLAuthorizationStatus.restricted:
             locationStatus = "Restricted Access to location"
-        case CLAuthorizationStatus.Denied:
+        case CLAuthorizationStatus.denied:
             locationStatus = "User denied access to location"
-            NSNotificationCenter.defaultCenter().postNotificationName(Notifications.Location.StatusDenied.rawValue, object: nil, userInfo: nil)
-        case CLAuthorizationStatus.NotDetermined:
+            NotificationCenter.default.post(name: Notification.Name(rawValue: Notifications.Location.StatusDenied.rawValue), object: nil, userInfo: nil)
+        case CLAuthorizationStatus.notDetermined:
             locationStatus = "Status not determined"
         default:
             self.manager!.startUpdatingLocation()

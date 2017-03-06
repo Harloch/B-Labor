@@ -1,0 +1,6 @@
+framework module Pods_BareLaborTests {
+  umbrella header "Pods-BareLaborTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

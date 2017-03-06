@@ -9,17 +9,17 @@
 import UIKit
 
 private enum TextfieldType: Int {
-    case None = 0
-    case Username = 1
-    case Useremail = 10
-    case UserFullName = 2
-    case Password = 4
-    case VerifyPassword = 5
+    case none = 0
+    case username = 1
+    case useremail = 10
+    case userFullName = 2
+    case password = 4
+    case verifyPassword = 5
 }
 
 private enum SegmentedControlIndex: Int {
-    case SignUp = 0
-    case Login = 1
+    case signUp = 0
+    case login = 1
 }
 
 class SignUpViewController: BaseViewController, UITextFieldDelegate {
@@ -55,7 +55,7 @@ class SignUpViewController: BaseViewController, UITextFieldDelegate {
     
 	@IBOutlet var activityIndicator: UIActivityIndicatorView!
 	
-    private var selectedTextfieldType: TextfieldType = .None
+    fileprivate var selectedTextfieldType: TextfieldType = .none
     
     var isSignUp: Bool = true
     
@@ -64,13 +64,13 @@ class SignUpViewController: BaseViewController, UITextFieldDelegate {
         
         self.navigationItem.title = "Sign Up"
         
-        self.signUpLoginButton.layer.borderColor = UIColor.whiteColor().CGColor
-        let fixedWidthBarItem = UIBarButtonItem(barButtonSystemItem: .FixedSpace, target: nil, action: nil)
+        self.signUpLoginButton.layer.borderColor = UIColor.white.cgColor
+        let fixedWidthBarItem = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
         fixedWidthBarItem.width = 10
         
-        let keyboardToolbarItems = [fixedWidthBarItem, UIBarButtonItem(image: UIImage(named: "ToolbarGoBackward"), style: .Plain, target: self, action: "didPressKeyboardBackButton:"), fixedWidthBarItem, UIBarButtonItem(image: UIImage(named: "ToolbarGoForward"), style: .Plain, target: self, action: "didPressKeyboardForwardButton:"), UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)]
+        let keyboardToolbarItems = [fixedWidthBarItem, UIBarButtonItem(image: UIImage(named: "ToolbarGoBackward"), style: .plain, target: self, action: #selector(SignUpViewController.didPressKeyboardBackButton(_:))), fixedWidthBarItem, UIBarButtonItem(image: UIImage(named: "ToolbarGoForward"), style: .plain, target: self, action: #selector(SignUpViewController.didPressKeyboardForwardButton(_:))), UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)]
         
-        let textfieldToolbar = UIToolbar(frame: CGRectMake(0, 0, Constants.Size.ScreenWidth.floatValue, 44))
+        let textfieldToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: Constants.Size.screenWidth.floatValue, height: 44))
         textfieldToolbar.items = keyboardToolbarItems
         
         self.emailTextField.inputAccessoryView = textfieldToolbar
@@ -81,7 +81,7 @@ class SignUpViewController: BaseViewController, UITextFieldDelegate {
         self.verifyPasswordTextField.inputAccessoryView = textfieldToolbar
         
         
-        var attributesDictionary = [NSForegroundColorAttributeName: UIColor.whiteColor(), NSFontAttributeName : UIFont.systemFontOfSize(18.0)]
+        var attributesDictionary = [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName : UIFont.systemFont(ofSize: 18.0)]
         self.usernameTextField.attributedPlaceholder = NSAttributedString(string: "Create User Name", attributes: attributesDictionary)
         self.emailTextField.attributedPlaceholder = NSAttributedString(string: "Email", attributes: attributesDictionary)
 //        attributesDictionary = [NSForegroundColorAttributeName: UIColor.whiteColor(), NSFontAttributeName : UIFont.systemFontOfSize(18.0)]
@@ -90,17 +90,17 @@ class SignUpViewController: BaseViewController, UITextFieldDelegate {
 //        attributesDictionary = [NSForegroundColorAttributeName: UIColor.whiteColor(), NSFontAttributeName : UIFont.systemFontOfSize(18.0)]
 //        self.emailTextField.attributedPlaceholder = NSAttributedString(string: "Email", attributes: attributesDictionary)
         
-        attributesDictionary = [NSForegroundColorAttributeName: UIColor.whiteColor(), NSFontAttributeName : UIFont.systemFontOfSize(18.0)]
+        attributesDictionary = [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName : UIFont.systemFont(ofSize: 18.0)]
         self.passwordTextField.attributedPlaceholder = NSAttributedString(string: "Password", attributes: attributesDictionary)
         
-        attributesDictionary = [NSForegroundColorAttributeName: UIColor.whiteColor(), NSFontAttributeName : UIFont.systemFontOfSize(18.0)]
+        attributesDictionary = [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName : UIFont.systemFont(ofSize: 18.0)]
         self.verifyPasswordTextField.attributedPlaceholder = NSAttributedString(string: "Verify Password", attributes: attributesDictionary)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "onKeyboardFrameChange:", name: UIKeyboardWillChangeFrameNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(SignUpViewController.onKeyboardFrameChange(_:)), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
     }
     
     override func didReceiveMemoryWarning() {
@@ -109,12 +109,12 @@ class SignUpViewController: BaseViewController, UITextFieldDelegate {
     
     // MARK: - IBActions
     
-    @IBAction func segmentedControlValueChnged(sender: UISegmentedControl){
+    @IBAction func segmentedControlValueChnged(_ sender: UISegmentedControl){
         if let index = SegmentedControlIndex(rawValue: sender.selectedSegmentIndex){
-            UIView.animateWithDuration(0.1 , animations: { () -> Void in
+            UIView.animate(withDuration: 0.1 , animations: { () -> Void in
                 switch index {
-                case .SignUp:
-                    self.emailView.hidden = false
+                case .signUp:
+                    self.emailView.isHidden = false
 //                    self.userFullNameHeight.constant = 30
 //                    self.userFullNameIconHeight.constant = 24
 //                    self.userFullNameSeparatorHeight.constant = 1
@@ -127,11 +127,11 @@ class SignUpViewController: BaseViewController, UITextFieldDelegate {
                     self.confirmPasswordSeparatorHeight.constant = 1
                     
                     
-                    let attributesDictionary = [NSForegroundColorAttributeName: UIColor.whiteColor(), NSFontAttributeName : UIFont.systemFontOfSize(18.0)]
+                    let attributesDictionary = [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName : UIFont.systemFont(ofSize: 18.0)]
                     self.usernameTextField.attributedPlaceholder = NSAttributedString(string: "Create User Name", attributes: attributesDictionary)
                     
                     self.isSignUp = true
-                case .Login:
+                case .login:
                     
 //                    self.userFullNameHeight.constant = 0
 //                    self.userFullNameIconHeight.constant = 0
@@ -140,12 +140,12 @@ class SignUpViewController: BaseViewController, UITextFieldDelegate {
 //                    self.userEmailHeight.constant = 0
 //                    self.userEmailIconHeight.constant = 0
 //                    self.userEmailSeparatorHeight.constant = 0
-                    self.emailView.hidden = true
+                    self.emailView.isHidden = true
                     self.confirmPasswordHeight.constant = 0
                     self.confirmPasswordIconHeight.constant = 0
                     self.confirmPasswordSeparatorHeight.constant = 0
                     
-                    let attributesDictionary = [NSForegroundColorAttributeName: UIColor.whiteColor(), NSFontAttributeName : UIFont.systemFontOfSize(18.0)]
+                    let attributesDictionary = [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName : UIFont.systemFont(ofSize: 18.0)]
                     self.usernameTextField.attributedPlaceholder = NSAttributedString(string: "User Name", attributes: attributesDictionary)
                     
                     self.isSignUp = false
@@ -158,43 +158,43 @@ class SignUpViewController: BaseViewController, UITextFieldDelegate {
         }
     }
     
-    func didPressKeyboardBackButton(sender: UIBarButtonItem) {
+    func didPressKeyboardBackButton(_ sender: UIBarButtonItem) {
         
         switch self.selectedTextfieldType {
 //        case .UserFullName:
 //            self.usernameTextField.becomeFirstResponder()
-        case .Username:
+        case .username:
             self.emailTextField.becomeFirstResponder()
-        case .Password:
+        case .password:
             self.usernameTextField.becomeFirstResponder()
-        case .VerifyPassword:
+        case .verifyPassword:
             self.passwordTextField.becomeFirstResponder()
         default:
             debugPrint("Not supported")
         }
     }
     
-    func didPressKeyboardForwardButton(sender: UIBarButtonItem?) {
+    func didPressKeyboardForwardButton(_ sender: UIBarButtonItem?) {
         
         switch self.selectedTextfieldType {
-        case .Useremail:
+        case .useremail:
             self.usernameTextField.becomeFirstResponder()
-        case .Username:
+        case .username:
             self.passwordTextField.becomeFirstResponder()
 //        case .UserFullName:
 //            self.emailTextField.becomeFirstResponder()
 //        case .Email:
 //            self.passwordTextField.becomeFirstResponder()
-        case .Password:
+        case .password:
             self.verifyPasswordTextField.becomeFirstResponder()
-        case .VerifyPassword:
+        case .verifyPassword:
             self.verifyPasswordTextField.resignFirstResponder()
         default:
             debugPrint("Not supported")
         }
     }
     
-    @IBAction func didPressSignUpButton(sender: UIButton) {
+    @IBAction func didPressSignUpButton(_ sender: UIButton) {
         if (isSignUp) {
             
             let userName = self.usernameTextField.text
@@ -212,8 +212,8 @@ class SignUpViewController: BaseViewController, UITextFieldDelegate {
                 if (userPassword == userVerifyPassword) {
                     activityIndicator.startAnimating()
                     var deviceToken = ""
-                    if(NSUserDefaults.standardUserDefaults().valueForKey("device_token") != nil){
-                        deviceToken = NSUserDefaults.standardUserDefaults().valueForKey("device_token") as! String
+                    if(UserDefaults.standard.value(forKey: "device_token") != nil){
+                        deviceToken = UserDefaults.standard.value(forKey: "device_token") as! String
                     }
                     Network.sharedInstance.signUP(userName!, password: userPassword!, email: userEmail,userFullName: "", deviceToken: deviceToken) { (data) -> Void in
                         self.activityIndicator.stopAnimating()
@@ -225,36 +225,36 @@ class SignUpViewController: BaseViewController, UITextFieldDelegate {
                                 self.setUserDefaults(data!)
                                 
                             } else {
-                                let alert = UIAlertController(title: "Warning", message: "User with current name existed", preferredStyle: .Alert)
-                                alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-                                self.presentViewController(alert, animated: true, completion: nil)
+                                let alert = UIAlertController(title: "Warning", message: "User with current name existed", preferredStyle: .alert)
+                                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+                                self.present(alert, animated: true, completion: nil)
                             }
                         } else {
-                            let alert = UIAlertController(title: "Warning", message: "Connection Trouble", preferredStyle: .Alert)
-                            alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-                            self.presentViewController(alert, animated: true, completion: nil)
+                            let alert = UIAlertController(title: "Warning", message: "Connection Trouble", preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+                            self.present(alert, animated: true, completion: nil)
                         }
                     }
                 } else {
                     
-                    let alert = UIAlertController(title: "Warning", message: "Passwords not equal", preferredStyle: .Alert)
-                    alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-                    self.presentViewController(alert, animated: true, completion: nil)
+                    let alert = UIAlertController(title: "Warning", message: "Passwords not equal", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
                 }
                 
             } else {
                 
-                let alert = UIAlertController(title: "Warning", message: "Please filled all fields", preferredStyle: .Alert)
-                alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-                self.presentViewController(alert, animated: true, completion: nil)
+                let alert = UIAlertController(title: "Warning", message: "Please filled all fields", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+                self.present(alert, animated: true, completion: nil)
             }
         } else {
             
             let userName = self.usernameTextField.text
             let userPassword = self.passwordTextField.text
             var deviceToken = ""
-            if(NSUserDefaults.standardUserDefaults().valueForKey("device_token") != nil){
-                deviceToken = NSUserDefaults.standardUserDefaults().valueForKey("device_token") as! String
+            if(UserDefaults.standard.value(forKey: "device_token") != nil){
+                deviceToken = UserDefaults.standard.value(forKey: "device_token") as! String
             }
             
             if("" != userName && "" != userPassword ) {
@@ -270,94 +270,94 @@ class SignUpViewController: BaseViewController, UITextFieldDelegate {
                             
                         } else {
                             
-                            let alert = UIAlertController(title: "Warning", message: "Please check your login or password", preferredStyle: .Alert)
-                            alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-                            self.presentViewController(alert, animated: true, completion: nil)
+                            let alert = UIAlertController(title: "Warning", message: "Please check your login or password", preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+                            self.present(alert, animated: true, completion: nil)
                         }
                         
                     } else {
                         
-                        let alert = UIAlertController(title: "Warning", message: "Connection Problem", preferredStyle: .Alert)
-                        alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-                        self.presentViewController(alert, animated: true, completion: nil)
+                        let alert = UIAlertController(title: "Warning", message: "Connection Problem", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+                        self.present(alert, animated: true, completion: nil)
                     }
                 })
             } else {
-                let alert = UIAlertController(title: "Warning", message: "Please filled all fields", preferredStyle: .Alert)
-                alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-                self.presentViewController(alert, animated: true, completion: nil)
+                let alert = UIAlertController(title: "Warning", message: "Please filled all fields", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+                self.present(alert, animated: true, completion: nil)
             }
         }
     }
     
     // MARK: - Private Method
     
-    private func enableDisableButtonsInTextfield(textField: UITextField) {
+    fileprivate func enableDisableButtonsInTextfield(_ textField: UITextField) {
         
-        if let toolbar = textField.inputAccessoryView as? UIToolbar, type = TextfieldType(rawValue: textField.tag) {
+        if let toolbar = textField.inputAccessoryView as? UIToolbar, let type = TextfieldType(rawValue: textField.tag) {
             
             if let backButton = toolbar.items?[1] {
-                backButton.enabled = .Useremail != type
+                backButton.isEnabled = .useremail != type
             }
             if let forwardButton = toolbar.items?[4] {
-                forwardButton.enabled = .VerifyPassword != type
+                forwardButton.isEnabled = .verifyPassword != type
             }
         }
     }
     
-    func setUserDefaults(data:[String:AnyObject]) {
-        let defaults = NSUserDefaults.standardUserDefaults()
+    func setUserDefaults(_ data:[String:AnyObject]) {
+        let defaults = UserDefaults.standard
         
-        defaults.setObject(data["userID"], forKey: "userID")
-        defaults.setObject(data["username"], forKey: "username")
-        defaults.setObject(data["email"], forKey: "email")
+        defaults.set(data["userID"], forKey: "userID")
+        defaults.set(data["username"], forKey: "username")
+        defaults.set(data["email"], forKey: "email")
         
         if let userFullName = data["userFullname"] {
-            defaults.setObject(userFullName, forKey: "userFullname")
+            defaults.set(userFullName, forKey: "userFullname")
         }
         
         if let userLat = data["userLat"] {
-            defaults.setObject(userLat, forKey: "userLat")
+            defaults.set(userLat, forKey: "userLat")
         }
         
         if let userLong = data["userLong"] {
-            defaults.setObject(userLong, forKey: "userLong")
+            defaults.set(userLong, forKey: "userLong")
         }
         
         if let userAddress = data["userAddress"] {
-            defaults.setObject(userAddress, forKey: "userAddress")
+            defaults.set(userAddress, forKey: "userAddress")
         }
         
         if let userPhone = data["userPhone"] {
-            defaults.setObject(userPhone, forKey: "userPhone")
+            defaults.set(userPhone, forKey: "userPhone")
             
         }
         
         if let created = data["created"] {
-            defaults.setObject(created, forKey: "created")
+            defaults.set(created, forKey: "created")
         }
         
         if let resetToken = data["resetToken"] {
-            defaults.setObject(resetToken, forKey: "resetToken")
+            defaults.set(resetToken, forKey: "resetToken")
         }
         
         if let timeAgo = data["timeAgo"] {
-            defaults.setObject(timeAgo, forKey: "timeAgo")
+            defaults.set(timeAgo, forKey: "timeAgo")
         }
         
         if let _ = data["userAvatar"] as? NSNull {
             
         } else {
-            defaults.setObject(data["userAvatar"] , forKey: "userAvatar")
+            defaults.set(data["userAvatar"] , forKey: "userAvatar")
         }
         
-        let mainViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("MainMenuViewController")
+        let mainViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MainMenuViewController")
         self.navigationController?.pushViewController(mainViewController, animated: true)
     }
     
     // MARK: - UITextFieldDelegate Methods
     
-    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         
         if let type = TextfieldType(rawValue: textField.tag) {
             self.selectedTextfieldType = type
@@ -366,20 +366,20 @@ class SignUpViewController: BaseViewController, UITextFieldDelegate {
         return true
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.didPressKeyboardForwardButton(nil)
         return true
     }
     
     // MARK: - Keyboard Behavior
     
-    func onKeyboardFrameChange(sender: NSNotification) {
+    func onKeyboardFrameChange(_ sender: Notification) {
         
-        if let userInfo = sender.userInfo, keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue() {
+        if let userInfo = sender.userInfo, let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             
             
-            UIView.animateWithDuration((userInfo[UIKeyboardAnimationDurationUserInfoKey] as? Double)! , animations: { () -> Void in
-                if keyboardFrame.origin.y < Constants.Size.ScreenHeight.floatValue {//Keyboard Up
+            UIView.animate(withDuration: (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? Double)! , animations: { () -> Void in
+                if keyboardFrame.origin.y < Constants.Size.screenHeight.floatValue {//Keyboard Up
                     self.topContentTraling.constant = -93
                     
                 } else {//Keyboard Down

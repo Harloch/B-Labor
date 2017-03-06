@@ -14,16 +14,16 @@ class BaseViewController: UIViewController {
         super.viewDidLoad()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "onLocationDenied:", name: Notifications.Location.StatusDenied.rawValue, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(BaseViewController.onLocationDenied(_:)), name: NSNotification.Name(rawValue: Notifications.Location.StatusDenied.rawValue), object: nil)
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: Notifications.Location.StatusDenied.rawValue, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Notifications.Location.StatusDenied.rawValue), object: nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -32,26 +32,26 @@ class BaseViewController: UIViewController {
     
     // MARK: - Notification Observer
     
-    func onLocationDenied(sender: NSNotification) {
+    func onLocationDenied(_ sender: Notification) {
         
-        let alert = UIAlertController(title: "Warning", message: "Please turn on location in the Settings", preferredStyle: .Alert)
-        alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "Settings", style: .Default, handler: { (_) -> Void in
-            UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
+        let alert = UIAlertController(title: "Warning", message: "Please turn on location in the Settings", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Settings", style: .default, handler: { (_) -> Void in
+            UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
         }))
-        self.presentViewController(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
     }
     
     // MARK: - Public Method
     
-    func showNotificationAlertWithTitle(title: String?, message: String?, cancelButtonTitle: String!, actionHandler: ((Void) -> Void)?) {
+    func showNotificationAlertWithTitle(_ title: String?, message: String?, cancelButtonTitle: String!, actionHandler: ((Void) -> Void)?) {
         
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-        alert.addAction(UIAlertAction(title: cancelButtonTitle, style: .Cancel, handler: { (action) -> Void in
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: cancelButtonTitle, style: .cancel, handler: { (action) -> Void in
             if nil != actionHandler {
                 actionHandler!()
             }
         }))
-        self.presentViewController(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
     }
 }

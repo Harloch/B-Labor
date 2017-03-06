@@ -60,35 +60,35 @@ class Network: NSObject {
     static let URLHeaders = ["Content-Type" : "application/json", "Accept" : "application/json"]
     
     
-    func get(url: String, parameters: [String: AnyObject]? = nil, completionHandler: (data : AnyObject?) -> ()){
+    func get(_ url: String, parameters: [String: AnyObject]? = nil, completionHandler: @escaping (_ data : AnyObject?) -> ()){
         
-        Alamofire.request(.GET, url, parameters: parameters, encoding: .JSON, headers: Network.URLHeaders).responseJSON(options: NSJSONReadingOptions.AllowFragments) { (_, _, result) -> Void in
+        Alamofire.request(.GET, url, parameters: parameters, encoding: .json, headers: Network.URLHeaders).responseJSON(options: JSONSerialization.ReadingOptions.allowFragments) { (_, _, result) -> Void in
             
             switch result {
-            case .Success(let data):
+            case .success(let data):
                 completionHandler(data: data)
-            case .Failure(_, let error):
+            case .failure(_, let error):
                 print("Request failed with error: \(error)")
                 completionHandler(data: nil)
             }
         }
     }
     
-    func post(url: String, parameters: [String: AnyObject]? = nil, completionHandler: (data : AnyObject?) -> ()){
+    func post(_ url: String, parameters: [String: AnyObject]? = nil, completionHandler: @escaping (_ data : AnyObject?) -> ()){
         
-        Alamofire.request(.POST, url, parameters: parameters, encoding: .JSON, headers: Network.URLHeaders).responseJSON(options: NSJSONReadingOptions.AllowFragments) { (_, _, result) -> Void in
+        Alamofire.request(.POST, url, parameters: parameters, encoding: .json, headers: Network.URLHeaders).responseJSON(options: JSONSerialization.ReadingOptions.allowFragments) { (_, _, result) -> Void in
             
             switch result {
-            case .Success(let data):
+            case .success(let data):
                 completionHandler(data: data)
-            case .Failure(_, let error):
+            case .failure(_, let error):
                 print("Request failed with error: \(error)")
                 completionHandler(data: nil)
             }
         }
     }
 	
-	func postMultipartData(multipartData: [String : NSData], url: String, parameters: [String : AnyObject]?, completionHandler: (data : AnyObject?) -> ())
+	func postMultipartData(_ multipartData: [String : Data], url: String, parameters: [String : AnyObject]?, completionHandler: @escaping (_ data : AnyObject?) -> ())
 	{
 		Alamofire.upload(
 			.POST,
@@ -97,7 +97,7 @@ class Network: NSObject {
 			multipartFormData: { (multipartFormData) -> Void in
 				for (key, data) in multipartData
 				{
-					let filename = NSUUID().UUIDString + ".jpg"
+					let filename = UUID().uuidString + ".jpg"
 					multipartFormData.appendBodyPart(data: data, name: key, fileName: filename, mimeType: "image/jpeg")
 				}
 				
@@ -105,7 +105,7 @@ class Network: NSObject {
 				{
 					for (key, parameter) in parameters
 					{
-						multipartFormData.appendBodyPart(data: "\(parameter)".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!, name: key)
+						multipartFormData.appendBodyPart(data: "\(parameter)".data(using: String.Encoding.utf8, allowLossyConversion: false)!, name: key)
 					}
 				}
 			},
@@ -113,19 +113,19 @@ class Network: NSObject {
 			{ (encodingResult) -> Void in
 				switch encodingResult
 				{
-					case .Success(let upload, _, _):
+					case .success(let upload, _, _):
 						upload.responseString { (request, response, result) -> Void in
 							debugPrint(result)
 						}.responseJSON { _, response, result in
 							switch result
 							{
-								case .Success(let data):
+								case .success(let data):
 									completionHandler(data: data)
-								case .Failure(_, let error):
+								case .failure(_, let error):
 									completionHandler(data: nil)
 							}
 						}
-					case .Failure(let encodingError):
+					case .failure(let encodingError):
 						debugPrint(encodingError)
 						completionHandler(data: nil)
 				}
@@ -142,7 +142,7 @@ class Network: NSObject {
      - parameter userFullname Full user name
      */
     
-    func signUP(userName: String, password: String, email: String, userFullName: String, deviceToken: String, completion: (data:[String:AnyObject]?) -> Void) {
+    func signUP(_ userName: String, password: String, email: String, userFullName: String, deviceToken: String, completion: @escaping (_ data:[String:AnyObject]?) -> Void) {
         
         let url = Network.registrationURLString
         let params = ["username":userName,
@@ -151,7 +151,7 @@ class Network: NSObject {
             //"userFullname" : userFullName,
             "device_token" : deviceToken]
         
-        post(url, parameters: params) { (data) -> () in
+        post(url, parameters: params as [String : AnyObject]?) { (data) -> () in
             
             if (nil != data) {
                 
@@ -159,25 +159,25 @@ class Network: NSObject {
                 let registrationInfo = data as? [String : AnyObject]
                 
                 if let status = registrationInfo!["status"] as? String, var item = registrationInfo!["item"] as? [String:AnyObject] {
-                    item["status"] = status
+                    item["status"] = status as AnyObject?
                     returnedDictionary = item
                     
                 }
-                completion(data: returnedDictionary)
+                completion(returnedDictionary)
             } else {
-                completion(data: nil)
+                completion(nil)
             }
         }
     }
     
-    func signUP(userName: String, password: String, deviceToken: String, completion: (data:[String:AnyObject]?) -> Void) {
+    func signUP(_ userName: String, password: String, deviceToken: String, completion: @escaping (_ data:[String:AnyObject]?) -> Void) {
         
         let url = Network.registrationURLString
         let params = ["username":userName,
                       "password":password,
                       "device_token" : deviceToken]
         
-        post(url, parameters: params) { (data) -> () in
+        post(url, parameters: params as [String : AnyObject]?) { (data) -> () in
             
             if (nil != data) {
                 
@@ -186,13 +186,13 @@ class Network: NSObject {
                 let registrationInfo = data as? [String : AnyObject]
                 
                 if let status = registrationInfo!["status"] as? String, var item = registrationInfo!["item"] as? [String:AnyObject] {
-                    item["status"] = status
+                    item["status"] = status as AnyObject?
                     returnedDictionary = item
                     
                 }
-                completion(data: returnedDictionary)
+                completion(returnedDictionary)
             } else {
-                completion(data: nil)
+                completion(nil)
             }
         }
     }
@@ -205,26 +205,26 @@ class Network: NSObject {
      - parameter password User password from registration
      */
     
-    func logIn(userName: String, password: String, device_token: String, completion: (data:[String:AnyObject]?) -> Void) {
+    func logIn(_ userName: String, password: String, device_token: String, completion: @escaping (_ data:[String:AnyObject]?) -> Void) {
         
         let url = Network.loginURLString
         let params = ["username":userName,
             "password":password,
             "device_token":device_token]
         
-        post(url, parameters: params) { (data) -> () in
+        post(url, parameters: params as [String : AnyObject]?) { (data) -> () in
             
             if (nil != data) {
                 var returnedDictionary: [String: AnyObject] = [:]
                 let logInInfo = data as? [String : AnyObject]
                 
                 if let status = logInInfo!["status"] as? String, var item = logInInfo!["item"] as? [String:AnyObject] {
-                    item["status"] = status
+                    item["status"] = status as AnyObject?
                     returnedDictionary = item
                 }
-                completion(data: returnedDictionary)
+                completion(returnedDictionary)
             } else {
-                completion(data: nil)
+                completion(nil)
             }
         }
     }
@@ -237,12 +237,12 @@ class Network: NSObject {
      
      */
     
-    func getEstimates(userID: String, estimateID: String, completion: (data:[String:AnyObject]?) -> Void) {
+    func getEstimates(_ userID: String, estimateID: String, completion: @escaping (_ data:[String:AnyObject]?) -> Void) {
         let url = Network.getEstimate
         let params = ["userID":userID,
                       "estimateID":estimateID]
         
-        post(url, parameters: params) { (data) -> () in
+        post(url, parameters: params as [String : AnyObject]?) { (data) -> () in
             
             if (nil != data) {
 //                var returnedDictionary: [String: AnyObject] = [:]
@@ -254,7 +254,7 @@ class Network: NSObject {
 //                }
 //                completion(data: returnedDictionary)
             } else {
-                completion(data: nil)
+                completion(nil)
             }
         }
     }
@@ -266,12 +266,12 @@ class Network: NSObject {
      - parameter year From year's make search
      */
     
-    func getMakeFromYear(year: String, completion: (data:[String]?) -> Void) {
+    func getMakeFromYear(_ year: String, completion: @escaping (_ data:[String]?) -> Void) {
         
         let url = Network.getMakeURLString
         let params = ["year":year]
         
-        post(url, parameters: params) { (data) -> () in
+        post(url, parameters: params as [String : AnyObject]?) { (data) -> () in
             
             if (nil != data) {
                 var returnArray: [String] = []
@@ -281,9 +281,9 @@ class Network: NSObject {
                 for items in makes["items"] as! [String] {
                     returnArray.append(items)
                 }
-                completion(data: returnArray)
+                completion(returnArray)
             } else {
-                completion(data: nil)
+                completion(nil)
             }
         }
     }
@@ -295,13 +295,13 @@ class Network: NSObject {
      - parameter make Get's make from year
      */
     
-    func getModel(year: String, make: String, completion: (data: [String]?) -> Void) {
+    func getModel(_ year: String, make: String, completion: @escaping (_ data: [String]?) -> Void) {
         
         let url = Network.getModelURLString
         let params = ["year":year,
             "make":make]
         
-        post(url, parameters: params) { (data) -> () in
+        post(url, parameters: params as [String : AnyObject]?) { (data) -> () in
             
             if (nil != data) {
                 var returnArray: [String] = []
@@ -311,9 +311,9 @@ class Network: NSObject {
                 for items in models["items"] as! [String] {
                     returnArray.append(items)
                 }
-                completion(data: returnArray)
+                completion(returnArray)
             } else {
-                completion(data: nil)
+                completion(nil)
             }
         }
     }
@@ -326,14 +326,14 @@ class Network: NSObject {
      - parameter model Get's model from make
      */
     
-    func getFeatures(year: String, make: String, model: String, completion: (data: [String]?) -> Void) {
+    func getFeatures(_ year: String, make: String, model: String, completion: @escaping (_ data: [String]?) -> Void) {
         
         let url = Network.getFeaturesURLString
         let params = ["year":year,
             "make":make,
             "model":model]
         
-        post(url, parameters: params) { (data) -> () in
+        post(url, parameters: params as [String : AnyObject]?) { (data) -> () in
             
             if (nil != data) {
                 var returnArray: [String] = []
@@ -343,9 +343,9 @@ class Network: NSObject {
                 for items in features["items"] as! [String] {
                     returnArray.append(items)
                 }
-                completion(data: returnArray)
+                completion(returnArray)
             } else {
-                completion(data: nil)
+                completion(nil)
             }
         }
     }
@@ -359,7 +359,7 @@ class Network: NSObject {
      - parameter feature Get's feature from model
      */
     
-    func getPriceByVehicle(year: String, make: String, model: String, feature: String, completion: (data: [String]?, ratingArray: NSArray) -> Void) {
+    func getPriceByVehicle(_ year: String, make: String, model: String, feature: String, completion: @escaping (_ data: [String]?, _ ratingArray: NSArray) -> Void) {
         
         let url = Network.getVehiclePrice
         let params = ["year" :year,
@@ -367,7 +367,7 @@ class Network: NSObject {
             "model":model,
             "feature":feature]
         
-        post(url, parameters: params) { (data) -> () in
+        post(url, parameters: params as [String : AnyObject]?) { (data) -> () in
             print(data)
             if (nil != data) {
                 var returnArray: [String] = []
@@ -376,9 +376,9 @@ class Network: NSObject {
                 for items in prices["items"] as! [String] {
                     returnArray.append(items)
                 }
-                completion(data: returnArray, ratingArray: ratingArray)
+                completion(returnArray, ratingArray!)
             } else {
-                completion(data: nil, ratingArray: [])
+                completion(nil, [])
             }
         }
     }
@@ -391,17 +391,17 @@ class Network: NSObject {
      - parameter diameter Diameter of searched object
      */
     
-    func getPriceBySize(width: String, ratio: String, diameter: String, completion: (data: [String]?, ratingArray: NSArray) -> Void) {
+    func getPriceBySize(_ width: String, ratio: String, diameter: String, completion: @escaping (_ data: [String]?, _ ratingArray: NSArray) -> Void) {
         
         let url = Network.getSizePrice
         let params = ["width":width,
             "ratio":ratio,
             "diameter":diameter]
         
-        post(url, parameters: params) { (data) -> () in
+        post(url, parameters: params as [String : AnyObject]?) { (data) -> () in
             let priceItems = data!["items"] as! NSArray!
             print(data)
-            if(priceItems.count != 0) {
+            if(priceItems?.count != 0) {
                 var returnArray: [String] = []
                 
                 let prices = data as! NSDictionary
@@ -409,10 +409,10 @@ class Network: NSObject {
                 for items in prices["items"] as! [String] {
                     returnArray.append(items)
                 }
-                completion(data: returnArray, ratingArray: ratingArray)
+                completion(returnArray, ratingArray!)
             } else {
                 print("failed")
-                completion(data: nil, ratingArray: [])
+                completion(nil, [])
             }
         }
     }
@@ -429,7 +429,7 @@ class Network: NSObject {
     - parameter comments User comments
     */
     
-    func sumbitExperience(userID: String, type: String, answers: String, name: String, email: String, shopName: String, comments: String, completion: (data: [String: AnyObject]?) -> Void) {
+    func sumbitExperience(_ userID: String, type: String, answers: String, name: String, email: String, shopName: String, comments: String, completion: @escaping (_ data: [String: AnyObject]?) -> Void) {
         
         let url = Network.submitExperience
         let params = ["userID":userID,
@@ -440,48 +440,48 @@ class Network: NSObject {
             "shop_name":shopName,
             "comments":comments]
         
-        post(url, parameters: params) { (data) -> () in
+        post(url, parameters: params as [String : AnyObject]?) { (data) -> () in
             if (nil != data) {
-                completion(data: data as? [String : AnyObject])
+                completion(data as? [String : AnyObject])
             } else {
-                completion(data: nil)
+                completion(nil)
             }
         }
     }
 	
-	func submitEstimateImage(image: UIImage, completion: (success: Bool) -> ())
+	func submitEstimateImage(_ image: UIImage, completion: @escaping (_ success: Bool) -> ())
 	{
 		let url = Network.submitEstimate
-		if let userID = NSUserDefaults.standardUserDefaults().objectForKey("userID")
+		if let userID = UserDefaults.standard.object(forKey: "userID")
 		{
 			let params = ["userID" : userID]
 			let imageData = UIImageJPEGRepresentation(image, 0.8)!
 			let multipartData = ["estimateImage" : imageData]
 			
-			postMultipartData(multipartData, url: url, parameters: params, completionHandler: { (data) -> () in
+			postMultipartData(multipartData, url: url, parameters: params as [String : AnyObject]?, completionHandler: { (data) -> () in
 				if let data = data
 				{
-					if let status = data["status"] as? String where status == "OK"
+					if let status = data["status"] as? String, status == "OK"
 					{
                         print(data)
                         //save EstimateID to local storage
-                        NSUserDefaults.standardUserDefaults().setValue(data["item"], forKey: "estimateID")
+                        UserDefaults.standard.setValue(data["item"], forKey: "estimateID")
                         
-						completion(success: true)
+						completion(true)
 					} else
 					{
-						completion(success: false)
+						completion(false)
 					}
 				} else
 				{
-					completion(success: false)
+					completion(false)
 				}
 			})
 
 		} else
 		{
 			print("Error: User not logged in")
-			completion(success: false)
+			completion(false)
 		}
 	}
 
@@ -491,12 +491,12 @@ class Network: NSObject {
     - parameter longitude User location longitude
      */
     
-    func getNearestLocationWithLocationLatitude(latitude: Double, locationLongitude longitude: Double, completion: (data: [[String:AnyObject]]?, errorMessage: String?) -> Void) {
+    func getNearestLocationWithLocationLatitude(_ latitude: Double, locationLongitude longitude: Double, completion: @escaping (_ data: [[String:AnyObject]]?, _ errorMessage: String?) -> Void) {
         
         let url = Network.getNearestLocations
         let params = ["lat": latitude,
                       "lng": longitude]
-        post(url, parameters: params) { (data) -> () in
+        post(url, parameters: params as [String : AnyObject]?) { (data) -> () in
             
             if (nil != data) {
                 var returnArray: [[String:AnyObject]] = []
@@ -505,13 +505,13 @@ class Network: NSObject {
                     for items in items {
                         returnArray.append(items)
                     }
-                    completion(data: returnArray, errorMessage: nil)
+                    completion(returnArray, nil)
                 } else if var status = data!["status"] as? String {
-                    status = status.stringByReplacingOccurrencesOfString("_", withString: " ")
-                    completion(data: nil, errorMessage: status)
+                    status = status.replacingOccurrences(of: "_", with: " ")
+                    completion(nil, status)
                 }
             } else {
-                completion(data: nil, errorMessage: "Unknown error")
+                completion(nil, "Unknown error")
             }
         }
     }

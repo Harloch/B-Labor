@@ -27,9 +27,9 @@ class LocationMapViewController: UIViewController, MKMapViewDelegate {
         self.navigationItem.title = "Map"
         
         if self.map.showsUserLocation == false {
-            self.selfLocationButton.selected = false
+            self.selfLocationButton.isSelected = false
         } else {
-            self.selfLocationButton.selected = true
+            self.selfLocationButton.isSelected = true
         }
         
         self.nameLabel.text = self.info["f_location"] as? String
@@ -41,7 +41,7 @@ class LocationMapViewController: UIViewController, MKMapViewDelegate {
         
         var region: MKCoordinateRegion?
         if let myLocation = LocationManager.sharedInstance.manager!.location {
-            let distance = myLocation.distanceFromLocation(location)
+            let distance = myLocation.distance(from: location)
             region = MKCoordinateRegionMakeWithDistance(myLocation.coordinate, distance*2, distance*2)
         } else {
             let span = MKCoordinateSpan(latitudeDelta: 1, longitudeDelta: 1)
@@ -55,11 +55,10 @@ class LocationMapViewController: UIViewController, MKMapViewDelegate {
         toyAnnotation.title = self.info["name"] as? String
         self.map.addAnnotation(toyAnnotation)
         
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.1 * Double(NSEC_PER_SEC))
-            ), dispatch_get_main_queue(), { () -> Void in
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(0.1 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: { () -> Void in
             
-                let nameLabelSize = self.nameLabel.sizeThatFits(CGSizeMake(self.nameLabel.bounds.size.width, CGFloat.max))
-                let addressLabelSize = self.addressLabel.sizeThatFits(CGSizeMake(self.addressLabel.bounds.size.width, CGFloat.max))
+                let nameLabelSize = self.nameLabel.sizeThatFits(CGSize(width: self.nameLabel.bounds.size.width, height: CGFloat.greatestFiniteMagnitude))
+                let addressLabelSize = self.addressLabel.sizeThatFits(CGSize(width: self.addressLabel.bounds.size.width, height: CGFloat.greatestFiniteMagnitude))
                 
                 self.nameLabelHeight.constant = nameLabelSize.height
                 self.topViewHeight.constant = 8 + nameLabelSize.height + 8 + addressLabelSize.height + 8
@@ -70,23 +69,23 @@ class LocationMapViewController: UIViewController, MKMapViewDelegate {
         self.setNeedsStatusBarAppearanceUpdate()
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
-    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         
-        var locationAnnotation = mapView.dequeueReusableAnnotationViewWithIdentifier("LocationAnnotation") as? LocationAnnotation
+        var locationAnnotation = mapView.dequeueReusableAnnotationView(withIdentifier: "LocationAnnotation") as? LocationAnnotation
         
         if nil == locationAnnotation {
             locationAnnotation = LocationAnnotation()
             locationAnnotation?.image = UIImage(named: "LocationPin")
             if let annotationFrame = locationAnnotation?.frame {
-                locationAnnotation?.centerOffset = CGPointMake(0, -annotationFrame.size.height/2)
+                locationAnnotation?.centerOffset = CGPoint(x: 0, y: -annotationFrame.size.height/2)
             }
         }
         locationAnnotation?.annotation = annotation
@@ -105,11 +104,11 @@ class LocationMapViewController: UIViewController, MKMapViewDelegate {
     
     @IBAction func didPressSelfLocationButton(){
         if self.map.showsUserLocation == false {
-            self.selfLocationButton.selected = true
+            self.selfLocationButton.isSelected = true
             self.map.showsUserLocation = true
         }
         else{
-            self.selfLocationButton.selected = false
+            self.selfLocationButton.isSelected = false
             self.map.showsUserLocation = false
         }
     }

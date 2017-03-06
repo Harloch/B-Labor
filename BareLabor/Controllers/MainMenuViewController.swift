@@ -22,34 +22,34 @@ class MainMenuViewController: BaseViewController {
 		
         // if already registered or signed hide "Register/Login" Button
         
-        if NSUserDefaults.standardUserDefaults().objectForKey("userID") != nil
+        if UserDefaults.standard.object(forKey: "userID") != nil
         {
-            registerBtn.hidden = true
+            registerBtn.isHidden = true
         }
         
-        self.navigationController?.navigationBarHidden = true
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
+        self.navigationController?.isNavigationBarHidden = true
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         
-        self.iDoNotHaveAnEstimateButton.layer.borderColor = UIColor.whiteColor().CGColor
-        self.iHaveAnEstimateButton.layer.borderColor = UIColor.whiteColor().CGColor
-        self.iNeedATireButton.layer.borderColor = UIColor.whiteColor().CGColor
-        self.iJustNeedAShopButton.layer.borderColor = UIColor.whiteColor().CGColor
-        self.viewHistoryButton.layer.borderColor = UIColor.whiteColor().CGColor
+        self.iDoNotHaveAnEstimateButton.layer.borderColor = UIColor.white.cgColor
+        self.iHaveAnEstimateButton.layer.borderColor = UIColor.white.cgColor
+        self.iNeedATireButton.layer.borderColor = UIColor.white.cgColor
+        self.iJustNeedAShopButton.layer.borderColor = UIColor.white.cgColor
+        self.viewHistoryButton.layer.borderColor = UIColor.white.cgColor
         
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.navigationController?.navigationBarHidden = true
+        self.navigationController?.isNavigationBarHidden = true
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    @IBAction func registerRequiredBtns(sender: UIButton) {
-        if NSUserDefaults.standardUserDefaults().objectForKey("userID") == nil
+    @IBAction func registerRequiredBtns(_ sender: UIButton) {
+        if UserDefaults.standard.object(forKey: "userID") == nil
         {
             CommonUtils.showAlert("Sorry", message: "You have must login/register to use this feature.")
             return
@@ -57,15 +57,15 @@ class MainMenuViewController: BaseViewController {
     
         // if "Scan My Estimate" Button is clicked
         if sender.tag == 1111 {
-            let scanViewController = self.storyboard?.instantiateViewControllerWithIdentifier("ScanViewController") as! ScanViewController!
-            self.navigationController?.pushViewController(scanViewController, animated: true)
+            let scanViewController = self.storyboard?.instantiateViewController(withIdentifier: "ScanViewController") as! ScanViewController!
+            self.navigationController?.pushViewController(scanViewController!, animated: true)
         }
             
         // if "Need a Tire" Button is clicked
             
         else if sender.tag == 1112 {
-            let needTireController = self.storyboard?.instantiateViewControllerWithIdentifier("NeedTireViewController") as! NeedTireViewController!
-            self.navigationController?.pushViewController(needTireController, animated: true)
+            let needTireController = self.storyboard?.instantiateViewController(withIdentifier: "NeedTireViewController") as! NeedTireViewController!
+            self.navigationController?.pushViewController(needTireController!, animated: true)
         }
             
         // If "View History" Button is tapped.
@@ -73,14 +73,14 @@ class MainMenuViewController: BaseViewController {
         else {
             
             // If there's no history avaiable display alerts
-            if NSUserDefaults.standardUserDefaults().objectForKey("estimateID") == nil
+            if UserDefaults.standard.object(forKey: "estimateID") == nil
             {
                 CommonUtils.showAlert("Sorry", message: "No History is Available.")
                 return
             }
             
-            let userID = NSUserDefaults.standardUserDefaults().objectForKey("userID") as! String!
-            let estimateIDNumber = NSUserDefaults.standardUserDefaults().objectForKey("estimateID") as! NSNumber!
+            let userID = UserDefaults.standard.object(forKey: "userID") as! String!
+            let estimateIDNumber = UserDefaults.standard.object(forKey: "estimateID") as! NSNumber!
             let estimateID = "\(estimateIDNumber)" as String!
             
             let dict = ["userID": userID, "estimateID": estimateID]
@@ -89,7 +89,7 @@ class MainMenuViewController: BaseViewController {
                 
                 // hide progress in main queue
                 
-                dispatch_async(dispatch_get_main_queue(), {() -> Void in
+                DispatchQueue.main.async(execute: {() -> Void in
                     
                     CommonUtils.hideProgress()
                 })
@@ -106,7 +106,7 @@ class MainMenuViewController: BaseViewController {
                         
                         if highCost == "" || averageCost == "" || lowCost == "" {
                             print("failed")
-                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            DispatchQueue.main.async(execute: { () -> Void in
                                 CommonUtils.showAlert("Almost There!", message: "Your last submission was not confirmed yet. Please try again soon.")
                             })
                             return
@@ -114,8 +114,8 @@ class MainMenuViewController: BaseViewController {
                         ChartViewController.lowValue = lowCost
                         ChartViewController.averageValue = averageCost
                         ChartViewController.highValue = highCost
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            let chartViewController = self.storyboard?.instantiateViewControllerWithIdentifier("ChartViewController") as! ChartViewController!
+                        DispatchQueue.main.async(execute: { () -> Void in
+                            let chartViewController = self.storyboard?.instantiateViewController(withIdentifier: "ChartViewController") as! ChartViewController!
                             self.navigationController?.pushViewController(chartViewController, animated: true)
 
                         })
@@ -134,9 +134,9 @@ class MainMenuViewController: BaseViewController {
         }
     }
     
-    @IBAction func registerBtnTapped(sender: UIButton) {
+    @IBAction func registerBtnTapped(_ sender: UIButton) {
         
-        if let signUpController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier(SignUpViewController.storyboardID) as? SignUpViewController {
+        if let signUpController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: SignUpViewController.storyboardID) as? SignUpViewController {
                 self.navigationController?.pushViewController(signUpController, animated: false)
             }
     }

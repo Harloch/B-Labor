@@ -20,13 +20,13 @@ struct Notifications {
 struct Constants {
     
     enum Size: CGFloat {
-        case ScreenHeight
-        case ScreenWidth
+        case screenHeight
+        case screenWidth
         
         var floatValue: CGFloat {
             switch self {
-            case .ScreenHeight: return max(UIScreen.mainScreen().bounds.size.width, UIScreen.mainScreen().bounds.size.height)
-            case .ScreenWidth: return min(UIScreen.mainScreen().bounds.size.width, UIScreen.mainScreen().bounds.size.height)
+            case .screenHeight: return max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
+            case .screenWidth: return min(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
             }
         }
     }

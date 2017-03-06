@@ -9,10 +9,10 @@
 import UIKit
 
 private enum ParkingBrake: Int {
-    case Cable = 0
-    case ReleaseCable = 1
-    case Shoe = 2
-    case Assembly = 3
+    case cable = 0
+    case releaseCable = 1
+    case shoe = 2
+    case assembly = 3
 }
 
 class PartsAndLaborViewController: BaseViewController {
@@ -30,25 +30,25 @@ class PartsAndLaborViewController: BaseViewController {
         super.viewDidLoad()
         
         self.navigationItem.title = "Parts & Labor"
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         
         self.inputCarInfoView.setYear(self.inputCarInfo.year, make: self.inputCarInfo.make, model: self.inputCarInfo.model, engineSize: self.inputCarInfo.engineSize)
         
         self.parkingBrakeCableButton.titleLabel?.numberOfLines = 2
-        self.parkingBrakeCableButton.titleLabel?.textAlignment = .Center
-        self.parkingBrakeCableButton.setTitle("Remove & Replace\nParking Brake Cable", forState: .Normal)
+        self.parkingBrakeCableButton.titleLabel?.textAlignment = .center
+        self.parkingBrakeCableButton.setTitle("Remove & Replace\nParking Brake Cable", for: UIControlState())
         
         self.parkingBrakeReleaseCableButton.titleLabel?.numberOfLines = 2
-        self.parkingBrakeReleaseCableButton.titleLabel?.textAlignment = .Center
-        self.parkingBrakeReleaseCableButton.setTitle("Remove & Replace\nParking Brake Release Cable", forState: .Normal)
+        self.parkingBrakeReleaseCableButton.titleLabel?.textAlignment = .center
+        self.parkingBrakeReleaseCableButton.setTitle("Remove & Replace\nParking Brake Release Cable", for: UIControlState())
         
         self.parkingBrakeShoeButton.titleLabel?.numberOfLines = 2
-        self.parkingBrakeShoeButton.titleLabel?.textAlignment = .Center
-        self.parkingBrakeShoeButton.setTitle("Remove & Replace\nParking Brake Shoe", forState: .Normal)
+        self.parkingBrakeShoeButton.titleLabel?.textAlignment = .center
+        self.parkingBrakeShoeButton.setTitle("Remove & Replace\nParking Brake Shoe", for: UIControlState())
         
         self.parkingBrakeAssemblyButton.titleLabel?.numberOfLines = 2
-        self.parkingBrakeAssemblyButton.titleLabel?.textAlignment = .Center
-        self.parkingBrakeAssemblyButton.setTitle("Remove & Replace\nParking Brake Assembly", forState: .Normal)
+        self.parkingBrakeAssemblyButton.titleLabel?.textAlignment = .center
+        self.parkingBrakeAssemblyButton.setTitle("Remove & Replace\nParking Brake Assembly", for: UIControlState())
     }
 
     override func didReceiveMemoryWarning() {
@@ -56,23 +56,23 @@ class PartsAndLaborViewController: BaseViewController {
     }
     
     
-    @IBAction func parkingButtonPressed(sender: UIButton){
+    @IBAction func parkingButtonPressed(_ sender: UIButton){
         
         if let type = ParkingBrake(rawValue: sender.tag) {
             switch type {
-            case .Cable:
-                self.performSegueWithIdentifier(ShowSegue.PartsAndLabor.Results.rawValue, sender: nil)
-            case .ReleaseCable:
-                self.performSegueWithIdentifier(ShowSegue.PartsAndLabor.Results.rawValue, sender: nil)
-            case .Shoe:
-                self.performSegueWithIdentifier(ShowSegue.PartsAndLabor.Results.rawValue, sender: nil)
-            case .Assembly:
-                self.performSegueWithIdentifier(ShowSegue.PartsAndLabor.Results.rawValue, sender: nil)
+            case .cable:
+                self.performSegue(withIdentifier: ShowSegue.PartsAndLabor.Results.rawValue, sender: nil)
+            case .releaseCable:
+                self.performSegue(withIdentifier: ShowSegue.PartsAndLabor.Results.rawValue, sender: nil)
+            case .shoe:
+                self.performSegue(withIdentifier: ShowSegue.PartsAndLabor.Results.rawValue, sender: nil)
+            case .assembly:
+                self.performSegue(withIdentifier: ShowSegue.PartsAndLabor.Results.rawValue, sender: nil)
             }
         }
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == ShowSegue.PartsAndLabor.Results.rawValue {
             

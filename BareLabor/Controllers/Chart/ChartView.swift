@@ -16,19 +16,19 @@ class ChartView: UIView {
         super.init(coder: aDecoder)
     }
     
-    override func drawRect(rect: CGRect) {
+    override func draw(_ rect: CGRect) {
         print(rect.height)
         // draw the line graph
         
         let context = UIGraphicsGetCurrentContext();
-        CGContextSetLineCap(context, CGLineCap.Round)
+        context?.setLineCap(CGLineCap.round)
         
-        CGContextSetStrokeColorWithColor(context, UIColor.whiteColor().CGColor);
-        CGContextSetFillColorWithColor(context, UIColor.whiteColor().CGColor)
-        CGContextBeginPath(context);
+        context?.setStrokeColor(UIColor.white.cgColor);
+        context?.setFillColor(UIColor.white.cgColor)
+        context?.beginPath();
         
         //Grid
-        let grid : CGMutablePathRef = CGPathCreateMutable()
+        let grid : CGMutablePath = CGMutablePath()
         for i in 1..<Int(rect.height / 29 + 1){
             CGPathMoveToPoint(grid, nil, 0, CGFloat(29 * i))
             CGPathAddLineToPoint(grid, nil, rect.width, CGFloat(29 * i));
@@ -39,13 +39,13 @@ class ChartView: UIView {
             CGPathAddLineToPoint(grid, nil, CGFloat(29 * i), rect.height);
         }
         
-        CGContextAddPath(context, grid);
-        CGContextSetLineWidth(context, 1);
-        CGContextSetStrokeColorWithColor(context,UIColor.lightGrayColor().CGColor);
-        CGContextStrokePath(context)
+        context?.addPath(grid);
+        context?.setLineWidth(1);
+        context?.setStrokeColor(UIColor.lightGray.cgColor);
+        context?.strokePath()
         
         // Сhart
-        let сhart : CGMutablePathRef = CGPathCreateMutable()
+        let сhart : CGMutablePath = CGMutablePath()
         CGPathMoveToPoint(сhart, nil, -1, rect.height - 3 )
         CGPathAddLineToPoint(сhart, nil, rect.width/4 , rect.height - 3 );
         CGPathAddCurveToPoint(сhart, nil, rect.width/3 + 40, rect.height - 3, rect.width/2 - 20, 80, rect.width/2, 60 )
@@ -53,12 +53,12 @@ class ChartView: UIView {
         CGPathAddLineToPoint(сhart, nil, rect.width + 1 , rect.height - 3 );
         CGPathAddLineToPoint(сhart, nil, rect.width + 1 , rect.height + 1  );
         CGPathAddLineToPoint(сhart, nil, -1 , rect.height + 1  );
-        CGPathCloseSubpath(сhart);
+        сhart.closeSubpath();
         
         // Foreground Mountain stroking
-        CGContextAddPath(context, сhart);
-        CGContextSetLineWidth(context, 2);
-        CGContextSetStrokeColorWithColor(context,UIColor.whiteColor().CGColor);
-        CGContextStrokePath(context);
+        context?.addPath(сhart);
+        context?.setLineWidth(2);
+        context?.setStrokeColor(UIColor.white.cgColor);
+        context?.strokePath();
     }
 }
